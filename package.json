@@ -4,9 +4,12 @@
   "scripts": {
     "build": "gridsome build",
     "serve": "gridsome develop",
-    "explore": "gridsome explore"
+    "explore": "gridsome explore",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "gh-pages": "^3.2.3",
     "gridsome": "^0.7.0"
   },
   "devDependencies": {}

@@ -8,6 +8,7 @@ module.exports = {
   siteName: '不知凡几',
   siteDescription: '笔记', // 网站的基本介绍，有利于搜索引擎
   plugins: [],
-  outputDir: 'docs',
-  pathPrefix: 'docs'
+  outputDir: 'dist',
+  siteUrl: 'https://buzhifanji.github.io/blog/',
+  pathPrefix: '/buzhifanji.github.io'
 }
