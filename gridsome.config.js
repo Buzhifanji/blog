@@ -10,5 +10,4 @@ module.exports = {
   plugins: [],
   outputDir: 'dist',
   siteUrl: 'https://buzhifanji.github.io/blog/',
-  pathPrefix: '/buzhifanji.github.io/blog'
 }
