@@ -6,7 +6,7 @@
     "serve": "gridsome develop",
     "explore": "gridsome explore",
     "predeploy": "npm run build",
-    "build-github": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "gh-pages": "^3.2.3",
