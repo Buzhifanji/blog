@@ -10,5 +10,5 @@ module.exports = {
   plugins: [],
   outputDir: 'dist',
   siteUrl: '',
-  pathPrefix: 'https://github.com/Buzhifanji/blog/blob/tree/gh-pages/'
+  pathPrefix: 'blog'
 }
