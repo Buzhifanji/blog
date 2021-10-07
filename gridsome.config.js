@@ -9,6 +9,6 @@ module.exports = {
   siteDescription: '笔记', // 网站的基本介绍，有利于搜索引擎
   plugins: [],
   outputDir: 'dist',
-  siteUrl: 'https://github.com/Buzhifanji/blog',
-  pathPrefix: 'https://github.com/Buzhifanji/blog/blog/tree/gh-pages/'
+  siteUrl: '',
+  pathPrefix: 'https://github.com/Buzhifanji/blog/blob/tree/gh-pages/'
 }
