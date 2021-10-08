@@ -22,3 +22,29 @@
     --code-color: #fdf9f3;
     --glow: 2px 2px 15px 0 var(--border-color-darker);
 }
+
+/* 1. # - ###### 标题转换为 <h1> - <h6> 标签 */
+
+h3 {
+    color: darkgoldenrod;
+}
+
+h4 {
+    color: cadetblue;
+}
+
+/* 区块引用 > 转换为 <blockquote> 标签 */
+blockquote {
+    border-left: 4px solid darkgoldenrod;
+    padding: 1px 10px;
+    color: #666;
+    background-color: rgba(184, 134, 11, 0.1);
+}
+
+pre {
+    padding: 0 20px;
+    background-color: beige;
+}
+/* pre code {
+    font-size: 16px;
+} */

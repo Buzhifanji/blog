@@ -10,5 +10,20 @@ module.exports = {
   plugins: [],
   outputDir: 'dist',
   siteUrl: '',
-  pathPrefix: 'blog'
+  pathPrefix: 'blog',
+  plugins: [
+    {
+      use: '@gridsome/source-filesystem', // 插件
+      options: {
+        typeName: 'BlogPost', // 类型，对应GraphQL中的查询
+        path: 'blog/**/*.md', // 文件路径
+      }
+    },
+    
+  ],
+  // transformers: {
+  //   remark: {
+  //     // global remark options
+  //   }
+  // }
 }
