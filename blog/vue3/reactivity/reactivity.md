@@ -25,6 +25,7 @@ export function reactive(target: object) {
   if (target && (target as Target)[ReactiveFlags.IS_READONLY]) {
     return target
   }
+  // 定义响应式对象
   return createReactiveObject(
     target,
     false,
@@ -77,7 +78,7 @@ export interface Target {
 
 - __v_isReactive
 
-  当target上有 __v_isReactive 属性并且为true时，代表此target已经是响应式
+  当target上有 __v_isReactive 属性并且为true时，代表此target已经是响应式，并且是 reactive
 
 - __v_isReadonly
 
@@ -85,10 +86,113 @@ export interface Target {
 
 - __v_raw
 
-  当target上有 __v_raw属性并且为true时，代表此target已经是响应式，并且是 ref类型
+  当target上有 __v_raw属性并且为true时，代表此target已经是响应式，并且是 ref
 
 vue3中有两种响应式，一种是通过 reative,另一种是 ref。
 
 一图总结
 
 ![Alternative text](../../../src/imgs/Target.png)
+
+## 理解 TargetType
+
+```typescript
+// 目标对象 数据类型 集合
+const enum TargetType {
+  INVALID = 0, // 无效：不能被转换成响应式
+  COMMON = 1,  // 普通型：Object、Array 类型
+  COLLECTION = 2 // 收集型：Set、Map、WeakMap、WeakSet类型
+}
+// 目标对象 类型
+function targetTypeMap(rawType: string) {
+  switch (rawType) {
+    case 'Object':
+    case 'Array':
+      return TargetType.COMMON
+    case 'Map':
+    case 'Set':
+    case 'WeakMap':
+    case 'WeakSet':
+      return TargetType.COLLECTION
+    default:
+      return TargetType.INVALID
+  }
+}
+// 获取目标对象 类型，返回值是 TargetType
+function getTargetType(value: Target) {
+  // ReactiveFlags.SKIP => true, 代表着不是响应式数据（上文已经分析过了)
+  // Object.isExtensible() 方法判断一个对象是否是可扩展的（是否可以在它上面添加新的属性）
+  
+  // toRawType(value) 对应着 Object.prototype.toString.call(value).slice(8, -1)
+  // extract "RawType" from strings like "[object RawType]"
+  return value[ReactiveFlags.SKIP] || !Object.isExtensible(value)
+    ? TargetType.INVALID
+    : targetTypeMap(toRawType(value))
+}
+```
+
+总结：vue3把 targetType 分为三类：
+
+INVALID => 无效；
+
+COMMON => 通用（Object、Array); 
+
+ COLLECTION => 收集（Map、Set、WeakMap、WeakSet）
+
+## createReactiveObject
+
+前面介绍完 vue3 响应式 里自定义的属性已经数据类型，接下分析 createReactiveObject 函数，这个函数被用于多处地方。
+
+```typescript
+// 创建响应式对象
+function createReactiveObject(
+  target: Target,
+  isReadonly: boolean,
+  baseHandlers: ProxyHandler<any>,
+  collectionHandlers: ProxyHandler<any>,
+  proxyMap: WeakMap<Target, any>
+) {
+    // 判断 是为对象类型
+    // isObject => () => val !== null && typeof val === 'object'
+  if (!isObject(target)) {
+    if (__DEV__) {
+      console.warn(`value cannot be made reactive: ${String(target)}`)
+    }
+    return target
+  }
+
+  // 过滤 通过 ref 声明 的响应式对象
+  if (
+    target[ReactiveFlags.RAW] &&
+    !(isReadonly && target[ReactiveFlags.IS_REACTIVE])
+  ) {
+    return target
+  }
+
+  // 判断 target 是否转变成 响应式对象
+  const existingProxy = proxyMap.get(target)
+  if (existingProxy) {
+    return existingProxy
+  }
+
+  // 确认 target 的数据类型
+  const targetType = getTargetType(target)
+  if (targetType === TargetType.INVALID) {
+    // 无效的 target
+    return target
+  }
+
+  // TargetType.COLLECTION => collectionHandlers
+  // TargetType.COMMON => baseHandlers
+  // 通过 Proxy 转换成 响应对象，并存储到 对应的proxyMap 中
+  const proxy = new Proxy(
+    target,
+    targetType === TargetType.COLLECTION ? collectionHandlers : baseHandlers
+  )
+  proxyMap.set(target, proxy)
+  return proxy
+}
+```
+
+
+
