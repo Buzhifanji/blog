@@ -1,6 +1,7 @@
 ---
-title: Test
+title: 图解 Vue3.2响应式原理
 author: buzhifanji
+tag: vue3
 ---
 
 # 图解 vue-reactive
@@ -264,7 +265,7 @@ function createReactiveObject(
   // 确认 target 的数据类型
   const targetType = getTargetType(target)
   if (targetType === TargetType.INVALID) {
-    // 无效的 target
+    // 无效的 target,直接返回
     return target
   }
 

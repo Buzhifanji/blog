@@ -9,6 +9,7 @@ query ($id: ID!) {
   blogPost(id: $id) {
     title
     content
+    tag
   }
 }
 </page-query>
