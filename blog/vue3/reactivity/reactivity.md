@@ -3,7 +3,93 @@ title: Test
 author: buzhifanji
 ---
 
-# 逐行分析 vue3.2 源码之 reactive 笔记
+# 图解 vue-reactive
+
+最近笔记者在阅读vue3的源码，为了巩固知识，就整理了关于reactive的流程图，同时也便于大家理解vue3中的响应式原理。
+
+- 响应式对象
+- effect
+
+*本文 Vue源码版本是3.2,为了方便理解，函数名与源码保持一致，但删减代码一些判断逻辑，只关注主流程*
+
+## getter/setter
+
+vue3的使用 [[Proxy](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy)] 来创建代理对象，从而实现基本操作的拦截和自定义(如属性查找、赋值、枚举、函数调用等。为了更快的理解原理，我们目前只关注getter/setter。
+
+我们从reactive代码入口的地方开始分析.
+
+```typescript
+//==== reactive.ts
+
+// 1.创建 存储 reactive 的数据类型 Map
+export const reactiveMap = new WeakMap<Target, any>()
+
+// target 是我们需要转换的目标对象，例如： const a = {name: 'a'}
+export function reactive(target: object) {
+  // 2.定义响应式对象
+  return createReactiveObject(
+    target,
+    false,
+    mutableHandlers,
+    mutableCollectionHandlers,
+    reactiveMap
+  )
+}
+
+function createReactiveObject(
+  target: Target,
+  isReadonly: boolean,
+  baseHandlers: ProxyHandler<any>,
+  collectionHandlers: ProxyHandler<any>,
+  proxyMap: WeakMap<Target, any>
+) {
+  // 3.调用 new Proxy
+  const proxy = new Proxy(
+    target,
+    baseHandlers
+  )
+  // 4. 把响应式对象存储到 reactiveMap 中
+  proxyMap.set(target, proxy)
+  return proxy
+}
+
+// ==== baseHandlers.ts
+// 3.1.创建 getter/setter
+export const mutableHandlers: ProxyHandler<object> = {
+  get: createGetter,
+  set: createSetter,
+}
+// 创建 getter
+function createGetter() {
+  return function get(target: Target, key: string | symbol, receiver: object) {
+    const res = Reflect.get(target, key, receiver)
+    return res
+  }
+}
+// 创建 setter
+function createSetter() {
+  return function set(target: object,key: string | symbol,value: unknown,receiver: object): boolean {
+    const result = Reflect.set(target, key, value, receiver)
+    return result
+  }
+}
+
+```
+
+简单总结一下：
+
+- vue3会用一个WeakMap来存储响应式对象数据，key是普通对象，value是响应式对象
+- 通过Proxy和Reflect把普通对象转换成响应式对象
+
+流程图如下：
+
+![Alternative text](../../../src/imgs/reactive.png)
+
+
+
+## effect
+
+
 
 首先我们阅读vue的版本是3.2.19。
 
