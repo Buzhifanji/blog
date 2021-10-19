@@ -48,6 +48,7 @@ module.exports = {
                     items: [
                         '/vue3/',
                         '/vue3/debugging/',
+                        '/vue3/create-app/',
                     ]
                 }, ]
             }
