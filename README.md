@@ -1,17 +1,15 @@
-# Default starter for Gridsome
+<p align="center">
+    <img src="https://github.com/mrcrmn/docc/raw/master/static/logo.jpg" alt="Docc Logo" width="450">
+</p>
 
-This is the project you get when you run `gridsome create new-project`.
+A starter documentation theme for [Gridsome](https://gridsome.org/).
 
-### 1. Install Gridsome CLI tool if you don't have
+## Installation
 
-`npm install --global @gridsome/cli`
+If you have the Gridsome CLI installed, simply run:
 
-### 2. Create a Gridsome project
+`gridsome create your-project https://github.com/mrcrmn/docc`
 
-1. `gridsome create my-gridsome-site` to install default starter
-2. `cd my-gridsome-site` to open the folder
-3. `gridsome develop` to start a local dev server at `http://localhost:8080`
-4. Happy coding 🎉🙌
+## Documentation
 
-### 图标库地址
-`https://feathericons.com/`
+Documentation can be found [here](https://docc-theme.netlify.com/).

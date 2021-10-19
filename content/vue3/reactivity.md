@@ -84,9 +84,7 @@ function createSetter() {
 
 流程图如下：
 
-![Alternative text](../../../src/imgs/reactive.png)
-
-
+![Alternative text](../../src/assets/imgs/reactive.png)
 
 ## effect
 
@@ -209,7 +207,7 @@ function targetTypeMap(rawType: string) {
 function getTargetType(value: Target) {
   // ReactiveFlags.SKIP => true, 代表着不是响应式数据（上文已经分析过了)
   // Object.isExtensible() 方法判断一个对象是否是可扩展的（是否可以在它上面添加新的属性）
-  
+
   // toRawType(value) 对应着 Object.prototype.toString.call(value).slice(8, -1)
   // extract "RawType" from strings like "[object RawType]"
   return value[ReactiveFlags.SKIP] || !Object.isExtensible(value)
@@ -222,7 +220,7 @@ function getTargetType(value: Target) {
 
 INVALID => 无效；
 
-COMMON => 通用（Object、Array); 
+COMMON => 通用（Object、Array);
 
  COLLECTION => 收集（Map、Set、WeakMap、WeakSet）
 

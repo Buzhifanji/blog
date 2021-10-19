@@ -1,19 +1,24 @@
 {
-  "name": "blog",
+  "name": "gridsome-docs",
   "private": true,
   "scripts": {
     "build": "gridsome build",
     "serve": "gridsome develop",
-    "explore": "gridsome explore",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "explore": "gridsome explore"
   },
   "dependencies": {
-    "@gridsome/remark-prismjs": "^0.5.0",
-    "@gridsome/source-filesystem": "^0.6.2",
-    "@gridsome/transformer-remark": "^0.6.4",
-    "gh-pages": "^3.2.3",
     "gridsome": "^0.7.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@gridsome/plugin-google-analytics": "^0.1.0",
+    "@gridsome/plugin-sitemap": "^0.2.3",
+    "@gridsome/remark-prismjs": "^0.3.0",
+    "@gridsome/source-filesystem": "^0.6.2",
+    "@gridsome/transformer-remark": "^0.6.4",
+    "fuse.js": "^3.4.6",
+    "gridsome-plugin-tailwindcss": "^2.2.36",
+    "prism-themes": "^1.3.0",
+    "tailwindcss": "^1.2.0",
+    "vue-feather-icons": "^5.0.0"
+  }
 }

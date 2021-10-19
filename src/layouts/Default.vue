@@ -1,23 +1,41 @@
 <template>
-  <div class="layout">
-    <header class="header">
-      <div class="header_left">
-        <g-link to="/">{{ $static.metadata.siteName }}</g-link>
-      </div>
-      <div class="header_right">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-align-right"><line x1="21" y1="10" x2="7" y2="10"></line><line x1="21" y1="6" x2="3" y2="6"></line><line x1="21" y1="14" x2="3" y2="14"></line><line x1="21" y1="18" x2="7" y2="18"></line></svg>
-      </div>
-      
-      <!-- <strong>
-        <g-link to="/">{{ $static.metadata.siteName }}</g-link>
-      </strong>
-      <nav class="nav">
-        <g-link class="nav__link" to="/">Home</g-link>
-        <g-link class="nav__link" to="/about/">About</g-link>
-      </nav> -->
-    </header>
-    <slot/>
+  <div class="font-sans antialiased text-ui-typo bg-ui-background">
+    <div class="flex flex-col justify-start min-h-screen">
+
+      <header ref="header"
+              class="sticky top-0 z-10 w-full border-b bg-ui-background border-ui-border"
+              @resize="setHeaderHeight">
+        <LayoutHeader />
+      </header>
+
+      <main class="container relative flex flex-wrap justify-start flex-1 w-full bg-ui-background">
+
+        <aside v-if="hasSidebar"
+               class="sidebar"
+               :class="{ 'open': sidebarOpen }"
+               :style="sidebarStyle">
+          <div class="w-full pb-16 bg-ui-background">
+            <Sidebar @navigate="sidebarOpen = false" />
+          </div>
+        </aside>
+
+        <div class="w-full pb-24"
+             :class="{'pl-0 lg:pl-12 lg:w-3/4': hasSidebar}">
+          <slot />
+        </div>
+
+      </main>
+
+    </div>
+
+    <div v-if="hasSidebar"
+         class="fixed bottom-0 right-0 z-50 p-8 lg:hidden">
+      <button class="p-3 text-white rounded-full shadow-lg bg-ui-primary hover:text-white"
+              @click="sidebarOpen = ! sidebarOpen">
+        <XIcon v-if="sidebarOpen" />
+        <MenuIcon v-else />
+      </button>
+    </div>
   </div>
 </template>
 
@@ -30,42 +48,255 @@ query {
 </static-query>
 
 <script>
+import Sidebar from '@/components/Sidebar'
+import LayoutHeader from '@/components/LayoutHeader'
+import { MenuIcon, XIcon } from 'vue-feather-icons'
+
 export default {
-  metaInfo: {
-    title: 'layout default'
+  components: {
+    Sidebar,
+    LayoutHeader,
+    MenuIcon,
+    XIcon
   },
+  data() {
+    return {
+      headerHeight: 0,
+      sidebarOpen: false
+    }
+  },
+  watch: {
+    sidebarOpen: function(isOpen) {
+      document.body.classList.toggle('overflow-hidden', isOpen)
+    }
+  },
+  methods: {
+    setHeaderHeight() {
+      this.$nextTick(() => {
+        this.headerHeight = this.$refs.header.offsetHeight
+      })
+    }
+  },
+  computed: {
+    sidebarStyle() {
+      return {
+        top: this.headerHeight + 'px',
+        height: `calc(100vh - ${this.headerHeight}px)`
+      }
+    },
+    hasSidebar() {
+      return this.$page && this.headerHeight > 0
+    }
+  },
+  mounted() {
+    this.setHeaderHeight()
+  },
+  metaInfo() {
+    return {
+      meta: [
+        {
+          key: 'og:type',
+          name: 'og:type',
+          content: 'website'
+        },
+        {
+          key: 'twitter:card',
+          name: 'twitter:card',
+          content: 'summary_large_image'
+        },
+        {
+          key: 'og:image',
+          name: 'og:image',
+          content: process.env.SITE_URL + '/logo.jpg'
+        },
+        {
+          key: 'twitter:image',
+          name: 'twitter:image',
+          content: process.env.SITE_URL + '/logo.jpg'
+        }
+      ]
+    }
+  }
 }
 </script>
 
 <style>
-body {
-  font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-  margin:0;
-  padding:0;
-  line-height: 1.5;
+:root {
+  --color-ui-background: theme('colors.white');
+  --color-ui-typo: theme('colors.gray.700');
+  --color-ui-sidebar: theme('colors.gray.200');
+  --color-ui-border: theme('colors.gray.300');
+  --color-ui-primary: theme('colors.indigo.600');
 }
 
-.layout {
-  max-width: 1300px;
-  margin: 0 auto;
-  padding: 0 var(--space);
+html[lights-out] {
+  --color-ui-background: theme('colors.gray.900');
+  --color-ui-typo: theme('colors.gray.100');
+  --color-ui-sidebar: theme('colors.gray.800');
+  --color-ui-border: theme('colors.gray.800');
+  --color-ui-primary: theme('colors.indigo.500');
+}
+html[lights-out] pre[class*='language-'],
+code[class*='language-'] {
+  @apply bg-ui-border;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  height: 80px;
-}
-.header_right svg:last-child {
-  margin-left: 10px;
-}
-.nav__link {
-  margin-left: 20px;
-}
-svg {
-  cursor: pointer;
+* {
+  transition-property: color, background-color, border-color;
+  transition-duration: 200ms;
+  transition-timing-function: ease-in-out;
 }
 
+h1,
+h2,
+h3,
+h4 {
+  @apply leading-snug font-black mb-4 text-ui-typo;
+}
+h4:hover a::before {
+  @apply opacity-100;
+}
+
+h4 a::before {
+  content: '#';
+  margin-left: -1em;
+  padding-right: 1em;
+  @apply text-ui-primary absolute opacity-0 float-left;
+}
+
+h1 {
+  @apply text-4xl;
+}
+
+h2 {
+  @apply text-2xl;
+}
+
+h3 {
+  @apply text-xl;
+}
+
+h4 {
+  @apply text-lg;
+}
+
+a:not(.active):not(.text-ui-primary):not(.text-white) {
+  @apply text-ui-typo;
+}
+
+p,
+ol,
+ul,
+pre,
+strong,
+blockquote {
+  @apply mb-4 text-base text-ui-typo;
+}
+.content a {
+  @apply text-ui-primary underline;
+}
+.content h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply -mt-12 pt-20;
+}
+.content h2 + h3,
+h2 + h2,
+h3 + h3 {
+  @apply border-none -mt-20;
+}
+.content h2,
+h3 {
+  @apply border-b border-ui-border pb-1 mb-3;
+}
+.content ul {
+  @apply list-disc;
+}
+.content ul ul {
+  list-style: circle;
+}
+.content ol {
+  @apply list-decimal;
+}
+.content ol,
+ul {
+  @apply pl-5 py-1;
+}
+.content ol,
+ul li {
+  @apply mb-2;
+}
+.content ol,
+ul li p {
+  @apply mb-2;
+}
+.content ol,
+ul li p:last-child {
+  @apply mb-0;
+}
+
+blockquote {
+  @apply border-l-4 border-ui-border py-2 pl-4;
+}
+blockquote p:last-child {
+  @apply mb-0;
+}
+
+code {
+  @apply px-1 py-1 text-ui-typo bg-ui-sidebar font-mono border-b border-r border-ui-border text-sm rounded;
+}
+
+pre[class*='language-'] {
+  @apply max-w-full overflow-x-auto rounded;
+}
+
+pre[class*='language-'] + p {
+  @apply mt-4;
+}
+pre[class*='language-'] > code[class*='language-'] {
+  @apply border-none leading-relaxed;
+}
+
+header {
+  background-color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(4px);
+}
+table {
+  @apply text-left mb-6;
+}
+table td,
+th {
+  @apply py-3 px-4;
+}
+table td:first-child,
+th :first-child {
+  @apply pl-0;
+}
+table td:last-child,
+th :last-child {
+  @apply pr-0;
+}
+table tr {
+  @apply border-b border-ui-border;
+}
+table tr:last-child {
+  @apply border-b-0;
+}
+
+.sidebar {
+  @apply fixed bg-ui-background px-4 inset-x-0 bottom-0 w-full border-r border-ui-border overflow-y-auto transition-all z-40;
+  transform: translateX(-100%);
+}
+.sidebar .open {
+  transform: translateX(0);
+}
+@screen lg {
+  .sidebar {
+    @apply w-1/4 px-0 bg-transparent top-0 bottom-auto inset-x-auto sticky z-0;
+    transform: translateX(0);
+  }
+}
 </style>

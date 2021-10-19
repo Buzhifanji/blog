@@ -10,7 +10,7 @@ author: Dora
 
 ```js
 # 生成密钥对
-ssh-keygen 
+ssh-keygen
 
 # 把公钥放到服务器上
 scp
