@@ -299,4 +299,7 @@ table tr:last-child {
     transform: translateX(0);
   }
 }
+p {
+      line-height: 1.88em;
+}
 </style>
