@@ -3,6 +3,7 @@ title: 代码调试
 author: buzhifanji
 tag: vue3
 sidebar: 'vue3'
+next: '/vue3/create-app/'
 ---
 
 # Vue3.2源码阅读笔记——代码调试

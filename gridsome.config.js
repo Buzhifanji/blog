@@ -49,6 +49,7 @@ module.exports = {
                         '/vue3/',
                         '/vue3/debugging/',
                         '/vue3/create-app/',
+                        '/vue3/vnode-dom/',
                     ]
                 }, ]
             }

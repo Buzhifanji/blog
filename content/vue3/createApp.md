@@ -3,6 +3,7 @@ title: createApp
 author: buzhifanji
 tag: vue3
 sidebar: 'vue3'
+prev: '/vue3/debugging/'
 ---
 
 # Vue3.2源码阅读笔记——createApp
