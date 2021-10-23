@@ -150,7 +150,9 @@ code[class*='language-'] {
 h1,
 h2,
 h3,
-h4 {
+h4,
+h5,
+h6 {
   @apply leading-snug font-black mb-4 text-ui-typo;
 }
 h4:hover a::before {
@@ -300,6 +302,6 @@ table tr:last-child {
   }
 }
 p {
-      line-height: 1.88em;
+  line-height: 1.88em;
 }
 </style>
