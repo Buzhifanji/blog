@@ -50,6 +50,7 @@ module.exports = {
                         '/vue3/debugging/',
                         '/vue3/create-app/',
                         '/vue3/vnode-dom/',
+                        '/vue3/diff1/',
                     ]
                 }, ]
             }
