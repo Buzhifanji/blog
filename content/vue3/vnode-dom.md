@@ -74,21 +74,6 @@ const vnode = {
 
 组件 vnode 其实是对**抽象事物的描述**，这是因为我们并不会在页面上真正渲染一个 custom-component 标签，而是渲染组件内部定义的 HTML 标签。
 
-## vnode 分类
-vue内部针对 vnode 做了详细的分类，我们来看看 vue3定义的 VnodeType 类型接口：
-```ts
-export type VNodeTypes =
-  | string
-  | VNode
-  | Component // 注释节点
-  | typeof Text // 文本节点
-  | typeof Static // 静态节点
-  | typeof Comment
-  | typeof Fragment
-  | typeof TeleportImpl
-  | typeof SuspenseImpl
-```
-vue 定义那么多的类型有什么意义呢？
 ## 核心渲染流程：创建 vnode 和渲染 vnode
 
 我们在 createApp 一文中讲述了，vue3在初始化应用的时候，会创建一个 app 对象，其中 app.mount 函数内部流程大致如下：
@@ -470,3 +455,71 @@ const processElement = (n1, n2, container, anchor, parentComponent, parentSuspen
 这个函数逻辑与 processComponent 函数的处理逻辑类似：如果 n1 为 null，走挂载元素节点的逻辑，否则走更新元素节点逻辑。
 
 我们接着来看挂载元素的 mountElement 函数的实现：
+```js
+const mountElement = (vnode, container, anchor, parentComponent, parentSuspense, isSVG, slotScopeIds, optimized) => {
+    let el;
+    let vnodeHook;
+    const { type, props, shapeFlag, transition, patchFlag, dirs } = vnode;
+    {
+        // 创建 DOM 元素节点
+        el = vnode.el = hostCreateElement(vnode.type, isSVG, props && props.is, props);
+
+        if (shapeFlag & 8 /* TEXT_CHILDREN */) {
+            // 处理子节点是纯文本的情况
+            hostSetElementText(el, vnode.children);
+        } else if (shapeFlag & 16 /* ARRAY_CHILDREN */) {
+            // 处理子节点是数组的情况
+            mountChildren(vnode.children, el, null, parentComponent, parentSuspense, isSVG && type !== 'foreignObject', slotScopeIds, optimized);
+        }
+        // 处理 props，比如 class、style、event 等属性
+        if (props) {
+            for (const key in props) {
+                if (key !== 'value' && !isReservedProp(key)) {
+                    hostPatchProp(el, key, null, props[key], isSVG, vnode.children, parentComponent, parentSuspense, unmountChildren);
+                }
+            }
+        }
+        // 处理 css作用域
+        setScopeId(el, vnode, vnode.scopeId, slotScopeIds, parentComponent);
+    }
+    // 把创建的 DOM 元素节点挂载到 container 上
+    hostInsert(el, container, anchor);
+};
+```
+可以看出，挂载元素主要做了五件事情：创建 DOM 元素节点、处理文本或者数组的子节点、处理props、处理css作用域、挂载 DOM 元素到 container 上。
+
+DOM 元素是通过 hostCreateElement 方法创建的，这一个平台相关的方法，在 Web 环境中对应的的是：
+```js
+function createElement(tag, isSVG, is) {
+  isSVG ? document.createElementNS(svgNS, tag)
+    : document.createElement(tag, is ? { is } : undefined)
+}
+```
+它调用了底层的 DOM API document.createElement 创建元素。
+
+同样的如果子节点是文本节点，则执行 hostSetElementText 方法，它在 Web 环境下通过设置 DOM 元素的 textContent 属性设置文本：
+```js
+function setElementText(el, text) {
+  el.textContent = text
+}
+```
+处理props、处理css作用域，我们目前不做分析。
+
+我接下来看看，处理子节点是数组的情况,执行 mountChildren 方法：
+```js
+const mountChildren = (children, container, anchor, parentComponent, parentSuspense, isSVG, slotScopeIds, optimized, start = 0) => {
+    for (let i = start; i < children.length; i++) {
+        // 对子节点 预处理（优化）
+        const child = (children[i] = optimized
+            ? cloneIfMounted(children[i])
+            : normalizeVNode(children[i]));
+        // 递归 patch 挂载 child
+        patch(null, child, container, anchor, parentComponent, parentSuspense, isSVG, slotScopeIds, optimized);
+    }
+};
+```
+子节点的挂载逻辑同样很简单，遍历 children 获取到每一个 child，然后递归执行 patch 方法挂载每一个 child。
+
+这里需要注意的是，递归 patch 是**深度优先遍历树**的方式。
+
+处理完所有子节点后，最后通过 hostInsert 方法把创建的 DOM 元素节点挂载到 container 上。
