@@ -136,8 +136,8 @@ html[lights-out] {
   --color-ui-border: theme('colors.gray.800');
   --color-ui-primary: theme('colors.indigo.500');
 }
-html[lights-out] pre[class*='language-'],
-code[class*='language-'] {
+html[lights-out] code[class*='language-'],
+html[lights-out] pre[class*='language-'] {
   @apply bg-ui-border;
 }
 
