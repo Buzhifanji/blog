@@ -15,11 +15,11 @@
           </g-link>
 
           <div v-if="settings.nav.links.length > 0"
-               class="hidden ml-2 mr-5 sm:block sm:ml-8">
+               class="w-200 ml-2 mr-5 sm:ml-8 justify-items-aut">
             <g-link v-for="link in settings.nav.links"
                     :key="link.path"
                     :to="link.path"
-                    class="block p-1 font-medium nav-link text-ui-typo hover:text-ui-primary">
+                    class="p-1 font-medium nav-link text-ui-typo hover:text-ui-primary">
               {{ link.title }}
             </g-link>
           </div>
@@ -144,5 +144,8 @@ header svg:not(.feather-search):hover {
 
 .nav-link .active {
   @apply text-ui-primary font-bold border-ui-primary;
+}
+.w-200 {
+  width: 247px;
 }
 </style>

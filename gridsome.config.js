@@ -19,29 +19,11 @@ module.exports = {
         nav: {
             links: [ // 配置头部导航栏
                 { path: '/vue3/', title: 'vue3' },
-                { path: '/docs/', title: 'Docs' }
+                { path: '/design-pattern/creational-patterns/easy-factory-method/', title: '设计模式' },
+                { path: '/data-structure/stack/', title: '数据结构与算法' },
             ]
         },
-        sidebar: [{
-                name: 'docs',
-                sections: [{
-                        title: 'Getting Started',
-                        items: [
-                            '/docs/',
-                            '/docs/installation/',
-                            '/docs/writing-content/',
-                            '/docs/deploying/',
-                        ]
-                    },
-                    {
-                        title: 'Configuration',
-                        items: [
-                            '/docs/settings/',
-                            '/docs/sidebar/',
-                        ]
-                    }
-                ]
-            },
+        sidebar: [
             {
                 name: 'vue3',
                 sections: [{
@@ -55,7 +37,25 @@ module.exports = {
                         '/vue3/diff1/',
                     ]
                 }, ]
-            }
+            },
+            {
+                name: 'design-pattern',
+                sections: [{
+                    title: '设计模式',
+                    items: [
+                        '/design-pattern/creational-patterns/easy-factory-method/',
+                    ]
+                }, ]
+            },
+            {
+                name: 'data-structure',
+                sections: [{
+                    title: '数据结构与算法',
+                    items: [
+                        '/data-structure/stack/',
+                    ]
+                }, ]
+            },
         ]
     },
     plugins: [{
