@@ -146,6 +146,6 @@ header svg:not(.feather-search):hover {
   @apply text-ui-primary font-bold border-ui-primary;
 }
 .w-200 {
-  width: 247px;
+  width: 290px;
 }
 </style>

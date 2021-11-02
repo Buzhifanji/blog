@@ -21,10 +21,10 @@ module.exports = {
                 { path: '/vue3/', title: 'vue3' },
                 { path: '/design-pattern/creational-patterns/easy-factory-method/', title: '设计模式' },
                 { path: '/data-structure/stack/', title: '数据结构与算法' },
+                { path: '/network/dns/', title: '网络' },
             ]
         },
-        sidebar: [
-            {
+        sidebar: [{
                 name: 'vue3',
                 sections: [{
                     title: '阅读vue3源码',
@@ -53,6 +53,15 @@ module.exports = {
                     title: '数据结构与算法',
                     items: [
                         '/data-structure/stack/',
+                    ]
+                }, ]
+            },
+            {
+                name: 'network',
+                sections: [{
+                    title: '计算机网络',
+                    items: [
+                        '/network/dns/',
                     ]
                 }, ]
             },
