@@ -53,6 +53,7 @@ module.exports = {
                     title: '数据结构与算法',
                     items: [
                         '/data-structure/stack/',
+                        '/leetcode/1/',
                     ]
                 }, ]
             },
