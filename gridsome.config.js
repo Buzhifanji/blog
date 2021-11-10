@@ -53,8 +53,8 @@ module.exports = {
                     title: '数据结构与算法',
                     items: [
                         '/data-structure/stack/',
-                        '/leetcode/1/',
-                        '/leetcode/2/',
+                        '/leetcode/add-two-numbers/',
+                        '/leetcode/two-sum/',
                     ]
                 }, ]
             },
