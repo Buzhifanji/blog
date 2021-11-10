@@ -54,6 +54,7 @@ module.exports = {
                     items: [
                         '/data-structure/stack/',
                         '/leetcode/1/',
+                        '/leetcode/2/',
                     ]
                 }, ]
             },
