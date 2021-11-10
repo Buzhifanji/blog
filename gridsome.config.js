@@ -55,6 +55,7 @@ module.exports = {
                         '/data-structure/stack/',
                         '/leetcode/add-two-numbers/',
                         '/leetcode/two-sum/',
+                        '/leetcode/longest-substring-without-repeating-characters/',
                     ]
                 }, ]
             },
