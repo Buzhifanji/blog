@@ -4,11 +4,9 @@
       <div class="flex flex-col items-center">
         <div class="flex flex-col items-center mb-2 text-ui-primary">
           <Logo :width="80" />
-          <h2 class="text-3xl text-6xl font-black tracking-tighter border-none">
-            DOCC
-          </h2>
+          <h2 class="text-3xl text-6xl font-black tracking-tighter border-none">学习计算机笔记</h2>
         </div>
-        <h1 class="text-4xl text-center lg:text-5xl">
+        <!-- <h1 class="text-4xl text-center lg:text-5xl">
           Great Documentation starts here.
         </h1>
         <p class="text-xl font-medium text-center">
@@ -33,51 +31,48 @@
 
         <p class="mt-8 text-center">
           Open Source. MIT License. <span class="border-b border-dashed border-ui-primary text-ui-primary">Make it your own</span>.
-        </p>
-
+        </p>-->
       </div>
 
-      <div class="pt-8 mx-auto mt-8 border-t md:mt-16 md:pt-16 border-top border-ui-border max-w-screen-sm"></div>
+      <div
+        class="pt-8 mx-auto mt-8 border-t md:mt-16 md:pt-16 border-top border-ui-border max-w-screen-sm"
+      ></div>
 
       <div class="flex flex-wrap justify-center -mx-4">
         <div class="flex flex-col items-center w-full px-4 mb-8 text-center md:w-1/3">
           <ZapIcon size="3x" class="mb-6 text-ui-primary" />
-          <h3 class="font-bold tracking-wide uppercase text-ui-primary">
-            Incredibly Fast
-          </h3>
-          <p class="text-lg text-left">
-            Powered by Gridsome. Built on Vue. Outputs static files. It wont't get any faster than this. <span class="border-b border-dashed border-ui-primary text-ui-primary">No seriously</span>.
-          </p>
+          <h3 class="font-bold tracking-wide uppercase text-ui-primary">代码片段</h3>
+          <g-link to="/code-snippet/">
+            <p class="text-lg text-left">个人代码记录库</p>
+          </g-link>
         </div>
 
         <div class="flex flex-col items-center w-full px-4 mb-8 text-center md:w-1/3">
           <SearchIcon size="3x" class="mb-6 text-ui-primary" />
-          <h3 class="font-bold tracking-wide uppercase text-ui-primary">
-            Instant Search
-          </h3>
+          <h3 class="font-bold tracking-wide uppercase text-ui-primary">Instant Search</h3>
           <p class="text-lg text-left">
-            All headlines are indexed. Instant search powered by Fuse.js. Find what you are looking for in the <span class="border-b border-dashed border-ui-primary text-ui-primary">blink of an eye</span>.
+            All headlines are indexed. Instant search powered by Fuse.js. Find what you are looking for in the
+            <span
+              class="border-b border-dashed border-ui-primary text-ui-primary"
+            >blink of an eye</span>.
           </p>
         </div>
 
         <div class="flex flex-col items-center w-full px-4 mb-8 text-center md:w-1/3">
           <MoonIcon size="3x" class="mb-6 text-ui-primary" />
-          <h3 class="font-bold tracking-wide uppercase text-ui-primary">
-            Lights out
-          </h3>
-          <p class="text-lg text-left">
-            Working late at night again? Enable dark mode with the click of a button.
-          </p>
+          <h3 class="font-bold tracking-wide uppercase text-ui-primary">Lights out</h3>
+          <p
+            class="text-lg text-left"
+          >Working late at night again? Enable dark mode with the click of a button.</p>
         </div>
       </div>
-
     </div>
   </Layout>
 </template>
 
 <script>
 import Logo from '@/components/Logo';
-import { ArrowRightCircleIcon, ZapIcon, CodeIcon, MoonIcon, SearchIcon } from 'vue-feather-icons';
+import { ArrowRightCircleIcon, CodeIcon, MoonIcon, SearchIcon, ZapIcon } from 'vue-feather-icons';
 
 export default {
   components: {

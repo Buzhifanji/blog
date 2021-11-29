@@ -68,6 +68,15 @@ module.exports = {
                     ]
                 }, ]
             },
+            {
+                name: 'code-snippet',
+                sections: [{
+                    title: '代码片段',
+                    items: [
+                        '/copy/',
+                    ]
+                }, ]
+            },
         ]
     },
     plugins: [{
