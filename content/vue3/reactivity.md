@@ -299,7 +299,9 @@ set 的时候比较简单，获取key，设置新值。如果是新增数据，�
           }
       }
       else {
-          // 新增数据 从无到有，
+          // 收集的依赖不是只有一个的情况
+          // 一种情况是数据清空
+          // 另外一种是存在多个依赖
           const effects = [];
           for (const dep of deps) {
               if (dep) {
@@ -332,4 +334,34 @@ set 的时候比较简单，获取key，设置新值。如果是新增数据，�
   }
 ```
 
-更新依赖有点复杂，首先是从 targetMap 找到target对应的数据，没有找到就不会更新依赖，
+更新依赖有点复杂
+
+首先是从 targetMap 找到target对应的数据，没有找到就不会更新依赖，直接返回。
+
+如果找到了则声明一个数组 deps 存储依赖数据，接下就是处理依赖数据的流程了
+
+如果是 clear, 则 deps 置空
+
+如果是 通过length更改数据 的情况，则遍历数组，把小于 newValue 的索引push到deps 数组中
+
+**如果 key 不等于 void 0，（这是常用的地方：schedule runs），则是把depsMap.get(key) push到deps数组中**
+
+剩余是处理迭代器中add、set、delete 的逻辑了。
+
+处理好依赖后，则会调用 triggerEffects，它会把每一个依赖中的 effect 哪出来执行一遍 
+
+effect.onTrigger 这个属性等后续 深入组件更新、doWatch原理、compute原理的时候会需要用上这个属性
+
+如果effect上有 onTrigger这属性，则先执行effect.onTrigger
+
+上面完成后，如果effect上有scheduler属性，则会执行effect.schedule，否则会执行effect.run
+
+scheduler 是为了提供我想要让你什么时候执行就什么时候执行的能力，也就是可以自己调度的能力。
+
+## 总结
+
+vue3通过Proxy和reflect这两个api把普通对象转换成响应式对象。
+
+当数据读取的时候，会触发get收集依赖，收集存储在一个WeakMap中，其中key是target（目标对象），value是一个Map数据结构，这个Map的key是我们读取数据对应的key（target的key），value是一个Set数据结构。Set存储的是activeEffect。
+
+当数据变更的时候，会触发set更新依赖，更新依赖的时候，会先去WeakMap中找到target对应的数据，找到后经过一番依赖数据标准后，遍历依赖，执行依赖的每一个activeEffect
