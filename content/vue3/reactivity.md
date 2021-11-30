@@ -1,5 +1,5 @@
 ---
-title: 图解 Vue3.2响应式原理
+title: Vue3.2-reactive实现原理
 author: buzhifanji
 tag: vue3
 ---
