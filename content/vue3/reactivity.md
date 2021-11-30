@@ -4,280 +4,332 @@ author: buzhifanji
 tag: vue3
 ---
 
-# 图解 vue-reactive
+# 带着问题阅读源码Vue3.2-reactive实现原理
 
-最近笔记者在阅读vue3的源码，为了巩固知识，就整理了关于reactive的流程图，同时也便于大家理解vue3中的响应式原理。
-
-- 响应式对象
-- effect
-
-*本文 Vue源码版本是3.2,为了方便理解，函数名与源码保持一致，但删减代码一些判断逻辑，只关注主流程*
-
-## getter/setter
-
-vue3的使用 [[Proxy](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy)] 来创建代理对象，从而实现基本操作的拦截和自定义(如属性查找、赋值、枚举、函数调用等。为了更快的理解原理，我们目前只关注getter/setter。
-
-我们从reactive代码入口的地方开始分析.
-
-```typescript
-//==== reactive.ts
-
-// 1.创建 存储 reactive 的数据类型 Map
-export const reactiveMap = new WeakMap<Target, any>()
-
-// target 是我们需要转换的目标对象，例如： const a = {name: 'a'}
-export function reactive(target: object) {
-  // 2.定义响应式对象
-  return createReactiveObject(
-    target,
-    false,
-    mutableHandlers,
-    mutableCollectionHandlers,
-    reactiveMap
-  )
-}
-
-function createReactiveObject(
-  target: Target,
-  isReadonly: boolean,
-  baseHandlers: ProxyHandler<any>,
-  collectionHandlers: ProxyHandler<any>,
-  proxyMap: WeakMap<Target, any>
-) {
-  // 3.调用 new Proxy
-  const proxy = new Proxy(
-    target,
-    baseHandlers
-  )
-  // 4. 把响应式对象存储到 reactiveMap 中
-  proxyMap.set(target, proxy)
-  return proxy
-}
-
-// ==== baseHandlers.ts
-// 3.1.创建 getter/setter
-export const mutableHandlers: ProxyHandler<object> = {
-  get: createGetter,
-  set: createSetter,
-}
-// 创建 getter
-function createGetter() {
-  return function get(target: Target, key: string | symbol, receiver: object) {
-    const res = Reflect.get(target, key, receiver)
-    return res
-  }
-}
-// 创建 setter
-function createSetter() {
-  return function set(target: object,key: string | symbol,value: unknown,receiver: object): boolean {
-    const result = Reflect.set(target, key, value, receiver)
-    return result
-  }
-}
-
-```
-
-简单总结一下：
-
-- vue3会用一个WeakMap来存储响应式对象数据，key是普通对象，value是响应式对象
-- 通过Proxy和Reflect把普通对象转换成响应式对象
-
-流程图如下：
-
-![Alternative text](../../src/assets/imgs/reactive.png)
-
-## effect
-
-
-
-首先我们阅读vue的版本是3.2.19。
-
-代码地址：https://github.com/vuejs/vue-next/blob/master/packages/reactivity/src/reactive.ts
-
-官方文档地址：https://v3.cn.vuejs.org/api/basic-reactivity.html#reactive
-
-在分析之前，我们得提出问题，vue3是如何实现 reactive？理解了 reactive 也就是理解了 vue3的响应式原理。
-
-## reactive 入口函数
-
-我们从 reative 入口函数走起
-
-```typescript
-
-export function reactive(target: object) {
-  // if trying to observe a readonly proxy, return the readonly version.
-  // 如果 target 是 只读 的proxy,则返回 target自身
-  if (target && (target as Target)[ReactiveFlags.IS_READONLY]) {
-    return target
-  }
-  // 定义响应式对象
-  return createReactiveObject(
-    target,
-    false,
-    mutableHandlers,
-    mutableCollectionHandlers,
-    reactiveMap
-  )
-}
-
-```
-
-## 理解 Target 四个属性
-
-```typescript
-// 字符串 常量枚举
-export const enum ReactiveFlags {
-  SKIP = '__v_skip',
-  IS_REACTIVE = '__v_isReactive',
-  IS_READONLY = '__v_isReadonly',
-  RAW = '__v_raw'
-}
-
-// 接口 Target key 是 ReactiveFlags中定义的枚举
-export interface Target {
-  [ReactiveFlags.SKIP]?: boolean
-  [ReactiveFlags.IS_REACTIVE]?: boolean
-  [ReactiveFlags.IS_READONLY]?: boolean
-  [ReactiveFlags.RAW]?: any
-}
-
-```
-
-- __v_skip
-
-通过 测试用例 我们知道，当target 对象上有 __v_skip 属性为true时，此时的target就不是 响应式的。
-
-** *此属性在阅读vnode的时候会被用上*
+vue3提供了一个新的API-reactive，用于定义响应式对象。
 
 ```js
-  test('should not observe objects with __v_skip', () => {
-    const original = {
-      foo: 1,
-      __v_skip: true
-    }
-    const observed = reactive(original)
-    // 判断 是否为 reactive
-    expect(isReactive(observed)).toBe(false)
-  })
+ const book = reactive({ title: 'Vue 3.2 reative 实现原理' })
 ```
 
-- __v_isReactive
+用法很简单，reactive包裹一个对象，返回的数据就是响应式对了。那么我们的问题来
 
-  当target上有 __v_isReactive 属性并且为true时，代表此target已经是响应式，并且是 reactive
+- vue3是如何转变成响应对象的呢？
 
-- __v_isReadonly
+- vue3内部数据是如何收集依赖以及更新依赖的？
 
-  当target上有 __v_isReadonly属性并且为true时，代表此target是只读，不能进行修改
+## createReactiveObject的实现
 
-- __v_raw
+```js
+  // 存储 reactive对象
+  const reactiveMap = new WeakMap();
 
-  当target上有 __v_raw属性并且为true时，代表此target已经是响应式，并且是 ref
-
-vue3中有两种响应式，一种是通过 reative,另一种是 ref。
-
-一图总结
-
-![Alternative text](../../../src/imgs/Target.png)
-
-## 理解 TargetType
-
-```typescript
-// 目标对象 数据类型 集合
-const enum TargetType {
-  INVALID = 0, // 无效：不能被转换成响应式
-  COMMON = 1,  // 普通型：Object、Array 类型
-  COLLECTION = 2 // 收集型：Set、Map、WeakMap、WeakSet类型
-}
-// 目标对象 类型
-function targetTypeMap(rawType: string) {
-  switch (rawType) {
-    case 'Object':
-    case 'Array':
-      return TargetType.COMMON
-    case 'Map':
-    case 'Set':
-    case 'WeakMap':
-    case 'WeakSet':
-      return TargetType.COLLECTION
-    default:
-      return TargetType.INVALID
+  // reactive函数入口
+  function reactive(target) {
+      return createReactiveObject(target, false, mutableHandlers, mutableCollectionHandlers, reactiveMap);
   }
-}
-// 获取目标对象 类型，返回值是 TargetType
-function getTargetType(value: Target) {
-  // ReactiveFlags.SKIP => true, 代表着不是响应式数据（上文已经分析过了)
-  // Object.isExtensible() 方法判断一个对象是否是可扩展的（是否可以在它上面添加新的属性）
 
-  // toRawType(value) 对应着 Object.prototype.toString.call(value).slice(8, -1)
-  // extract "RawType" from strings like "[object RawType]"
-  return value[ReactiveFlags.SKIP] || !Object.isExtensible(value)
-    ? TargetType.INVALID
-    : targetTypeMap(toRawType(value))
-}
+  function createReactiveObject(target, isReadonly, baseHandlers, collectionHandlers, proxyMap) {
+      // proxyMap 就是 reactiveMap
+      // target 已经存在 reactiveMap中，此时直接返回存在的数据
+      // 说明 同一个对象即时多次 reactive 调用，其返回的结果都是同一个响应式对象。
+      const existingProxy = proxyMap.get(target);
+      if (existingProxy) {
+          return existingProxy;
+      }
+      // 通过 Proxy 代理对象
+      const proxy = new Proxy(target, targetType === 2 /* COLLECTION */ ? collectionHandlers : baseHandlers);
+      // 存入 reactiveMap 中
+      proxyMap.set(target, proxy);
+      return proxy;
+  }
+```
+如果不了解Proxy这个api，可以点击[Proxy](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy)
+
+vue3通过 Proxy 这个api，把普通对象转换成响应式对象。在vue2中是的defineProperty这个api把普通对象转换成响应式对象，这个api存在缺陷，例如不能代理数组，当响应式对象添加属性的时候，就不是响应式对象了。
+
+## get的实现： createGetter
+
+```js
+  // get 的实现
+  const get = createGetter();
+  function createGetter(isReadonly = false, shallow = false) {
+      return function get(target, key, receiver) {
+          // 处理数组
+          const targetIsArray = isArray(target);
+          if (!isReadonly && targetIsArray && hasOwn(arrayInstrumentations, key)) {
+              return Reflect.get(arrayInstrumentations, key, receiver);
+          }
+          // 处理 对象
+          const res = Reflect.get(target, key, receiver);
+
+          if (!isReadonly) {
+              // 开始收集 依赖
+              track(target, "get" /* GET */, key);
+          }
+
+          if (isObject(res)) {
+              // 处理嵌套的对象：例如 {id: 1, value: {name: '嵌套', age: 18}}
+              // 注意此处 相对于vue2，此处延迟代理
+              // 首页 proxy 这个api只会代理第一层的数据。然后我们只有在读取数据，触发get，才会把嵌套的对象转换成响应式数据
+              // vue2的处理 创建get的时候，通过递归把所有数据都全部转换响应式对象
+              return isReadonly ? readonly(res) : reactive(res);
+          }
+          return res;
+      };
+  }
+```
+### get中处理数组情况：createArrayInstrumentations
+
+```js
+  function createArrayInstrumentations() {
+      const instrumentations = {};
+      // 处理 查询数据的 api
+      ['includes', 'indexOf', 'lastIndexOf'].forEach(key => {
+          instrumentations[key] = function (...args) {
+              //toRaw 从Reactive或Ref中得到原始数据
+              // toRaw作用 做一些不想被监听的事情(提升性能)
+              const arr = toRaw(this);
+              for (let i = 0, l = this.length; i < l; i++) {
+                  track(arr, "get" /* GET */, i + '');
+              }
+              // we run the method using the original args first (which may be reactive)
+              const res = arr[key](...args);
+              if (res === -1 || res === false) {
+                  // if that didn't work, run it again using raw values.
+                  return arr[key](...args.map(toRaw));
+              }
+              else {
+                  return res;
+              }
+          };
+      });
+      // 处理 数组更改的 api
+      ['push', 'pop', 'shift', 'unshift', 'splice'].forEach(key => {
+          instrumentations[key] = function (...args) {
+              // 开启依赖收集
+              pauseTracking();
+              // 变更的数据
+
+              //toRaw 从Reactive或Ref中得到原始数据
+              // toRaw作用 做一些不想被监听的事情(提升性能)
+              const res = toRaw(this)[key].apply(this, args);
+              // 关闭依赖收集
+              resetTracking();
+              return res;
+          };
+      });
+      return instrumentations;
+  }
 ```
 
-总结：vue3把 targetType 分为三类：
+数组树上比较特殊，'push', 'pop', 'shift', 'unshift', 'splice' 这个五个api会更改数组本身，
 
-INVALID => 无效；
+includes', 'indexOf', 'lastIndexOf'这个三个api是查询的数据，存在查询的时候数组已经变更的情况
 
-COMMON => 通用（Object、Array);
+### 依赖收集：track
 
- COLLECTION => 收集（Map、Set、WeakMap、WeakSet）
+```js
+  // 此处又有了 一个 WeakMap
+  const targetMap = new WeakMap();
 
-## createReactiveObject
-
-前面介绍完 vue3 响应式 里自定义的属性已经数据类型，接下分析 createReactiveObject 函数，这个函数被用于多处地方。
-
-```typescript
-// 创建响应式对象
-function createReactiveObject(
-  target: Target,
-  isReadonly: boolean,
-  baseHandlers: ProxyHandler<any>,
-  collectionHandlers: ProxyHandler<any>,
-  proxyMap: WeakMap<Target, any>
-) {
-    // 判断 是为对象类型
-    // isObject => () => val !== null && typeof val === 'object'
-  if (!isObject(target)) {
-    if (__DEV__) {
-      console.warn(`value cannot be made reactive: ${String(target)}`)
-    }
-    return target
+  // set 存 effct
+  const createDep = (effects) => {
+      const dep = new Set(effects);
+      dep.w = 0;
+      dep.n = 0;
+      return dep;
+  };
+  function track(target, type, key) {
+      // 与上面 createReactiveObject 处理有点类似
+      // 防止重复收集
+      let depsMap = targetMap.get(target);
+      if (!depsMap) {
+          targetMap.set(target, (depsMap = new Map()));
+      }
+      // 查找 target 中的 key,第一次的话 会默认一个空的set
+      let dep = depsMap.get(key);
+      if (!dep) {
+          depsMap.set(key, (dep = createDep()));
+      }
+      // 收集 副作用 effect
+      trackEffects(dep);
   }
+    function trackEffects(dep, debuggerEventExtraInfo) {
+      let shouldTrack = false;
+      if (shouldTrack) {
+          // 把当前 activeEffect 存入 set 中的
+          // activeEffect 是 ReactiveEffect 的实例对象，它长这样子：
+          //      {
+          //          fn: Function,
+          //          scheduler: scheduler,
+          //          active: true,
+          //          deps: [],
+          //          run() {},
+          //          stop() {},
+          //      }
 
-  // 过滤 通过 ref 声明 的响应式对象
-  if (
-    target[ReactiveFlags.RAW] &&
-    !(isReadonly && target[ReactiveFlags.IS_REACTIVE])
-  ) {
-    return target
+          dep.add(activeEffect);
+          activeEffect.deps.push(dep);
+      }
   }
-
-  // 判断 target 是否转变成 响应式对象
-  const existingProxy = proxyMap.get(target)
-  if (existingProxy) {
-    return existingProxy
-  }
-
-  // 确认 target 的数据类型
-  const targetType = getTargetType(target)
-  if (targetType === TargetType.INVALID) {
-    // 无效的 target,直接返回
-    return target
-  }
-
-  // TargetType.COLLECTION => collectionHandlers
-  // TargetType.COMMON => baseHandlers
-  // 通过 Proxy 转换成 响应对象，并存储到 对应的proxyMap 中
-  const proxy = new Proxy(
-    target,
-    targetType === TargetType.COLLECTION ? collectionHandlers : baseHandlers
-  )
-  proxyMap.set(target, proxy)
-  return proxy
-}
 ```
 
+存储数据有点绕，先是 用WeakMap存target，其中key是target，value是 Map
 
+Map 的key是 target 中的key，value是 Set
 
+Set里面存的是 当前 activeEffect
+
+## set的实现： createSetter
+
+```js
+  // set 的实现
+  const set = createSetter();
+  function createSetter(shallow = false) {
+      return function set(target, key, value, receiver) {
+          // 获取旧值
+          //toRaw 从Reactive或Ref中得到原始数据
+          // toRaw作用 做一些不想被监听的事情(提升性能)
+
+          let oldValue = target[key];
+          if (!shallow) {
+              value = toRaw(value);
+              oldValue = toRaw(oldValue);
+              if (!isArray(target) && isRef(oldValue) && !isRef(value)) {
+                  oldValue.value = value;
+                  return true;
+              }
+          }
+          // 获取 key，主要处理数组 NaN - 特殊情况
+          const hadKey = isArray(target) && isIntegerKey(key)
+              ? Number(key) < target.length
+              : hasOwn(target, key);
+          // 设置新值
+          const result = Reflect.set(target, key, value, receiver);
+
+          // 确保依赖的数据源是同一个 对象
+          if (target === toRaw(receiver)) {
+              if (!hadKey) {
+                  // 新增数据
+                  // 更新依赖
+                  trigger(target, "add" /* ADD */, key, value);
+              }
+              else if (hasChanged(value, oldValue)) {
+                  // 变更数据
+                  // 更新依赖
+                  trigger(target, "set" /* SET */, key, value, oldValue);
+              }
+          }
+          return result;
+      };
+  }
+```
+
+set 的时候比较简单，获取key，设置新值。如果是新增数据，触发新增依赖，如果更改数据，触发变更依赖。
+
+### 更新依赖：trigger
+
+```js
+  function trigger(target, type, key, newValue, oldValue, oldTarget) {
+      // 从 存储 target中的WeakMap 获取目标对象
+      const depsMap = targetMap.get(target);
+      if (!depsMap) {
+          // never been tracked
+          return;
+      }
+      // 数组 暂存依赖数据
+      let deps = [];
+      if (type === "clear" /* CLEAR */) {
+          // 清空依赖
+          deps = [...depsMap.values()];
+      }
+      else if (key === 'length' && isArray(target)) {
+          // 处理数组 通过 length 变更的情况
+          depsMap.forEach((dep, key) => {
+              if (key === 'length' || key >= newValue) {
+                  deps.push(dep);
+              }
+          });
+      }
+      else {
+          // 通过 schedule runs 的情况
+          // schedule runs for SET | ADD | DELETE
+          if (key !== void 0) {
+              deps.push(depsMap.get(key));
+          }
+          // also run for iteration key on ADD | DELETE | Map.SET
+          switch (type) {
+              case "add" /* ADD */:
+                  //
+                  if (!isArray(target)) {
+                      deps.push(depsMap.get(ITERATE_KEY));
+                      if (isMap(target)) {
+                          deps.push(depsMap.get(MAP_KEY_ITERATE_KEY));
+                      }
+                  }
+                  else if (isIntegerKey(key)) {
+                      // new index added to array -> length changes
+                      deps.push(depsMap.get('length'));
+                  }
+                  break;
+              case "delete" /* DELETE */:
+                  if (!isArray(target)) {
+                      deps.push(depsMap.get(ITERATE_KEY));
+                      if (isMap(target)) {
+                          deps.push(depsMap.get(MAP_KEY_ITERATE_KEY));
+                      }
+                  }
+                  break;
+              case "set" /* SET */:
+                  if (isMap(target)) {
+                      deps.push(depsMap.get(ITERATE_KEY));
+                  }
+                  break;
+          }
+      }
+      const eventInfo = { target, type, key, newValue, oldValue, oldTarget }
+          ;
+      if (deps.length === 1) {
+          if (deps[0]) {
+              {
+                  // 执行 更新依赖 effect
+                  triggerEffects(deps[0], eventInfo);
+              }
+          }
+      }
+      else {
+          // 新增数据 从无到有，
+          const effects = [];
+          for (const dep of deps) {
+              if (dep) {
+                  effects.push(...dep);
+              }
+          }
+          {
+              triggerEffects(createDep(effects), eventInfo);
+          }
+      }
+  }
+    function triggerEffects(dep, debuggerEventExtraInfo) {
+      for (const effect of isArray(dep) ? dep : [...dep]) {
+          if (effect !== activeEffect || effect.allowRecurse) {
+              // 组件更新, doWatch, computed设置这个属性
+              if (effect.onTrigger) {
+                  effect.onTrigger(extend({ effect }, debuggerEventExtraInfo));
+              }
+              // scheduler 调动更新
+              // doWatch 里面设置
+              if (effect.scheduler) {
+                  effect.scheduler();
+              }
+              else {
+                  // 最后是 effect run
+                  effect.run();
+              }
+          }
+      }
+  }
+```
+
+更新依赖有点复杂，首先是从 targetMap 找到target对应的数据，没有找到就不会更新依赖，
