@@ -348,7 +348,7 @@ set 的时候比较简单，获取key，设置新值。如果是新增数据，�
 
 剩余是处理迭代器中add、set、delete 的逻辑了。
 
-处理好依赖后，则会调用 triggerEffects，它会把每一个依赖中的 effect 哪出来执行一遍 
+处理好依赖后，则会调用 triggerEffects，它会把每一个依赖中的 effect 哪出来执行一遍
 
 effect.onTrigger 这个属性等后续 深入组件更新、doWatch原理、compute原理的时候会需要用上这个属性
 
@@ -365,3 +365,16 @@ vue3通过Proxy和reflect这两个api把普通对象转换成响应式对象。
 当数据读取的时候，会触发get收集依赖，收集存储在一个WeakMap中，其中key是target（目标对象），value是一个Map数据结构，这个Map的key是我们读取数据对应的key（target的key），value是一个Set数据结构。Set存储的是activeEffect。
 
 当数据变更的时候，会触发set更新依赖，更新依赖的时候，会先去WeakMap中找到target对应的数据，找到后经过一番依赖数据标准后，遍历依赖，执行依赖的每一个activeEffect
+## 自问自答系列：
+
+- 为什么用weakMap 存储响应式对象？
+
+用weakMap的用处防止内存泄漏，当变量的引用不存在的时候，自动会清楚内存；缓存响应式数据是为了防止重复收集
+
+- 依赖数据存储分别用了 weakMap、Map、Set三种数据结构存储，为什么要这样设计呢？
+
+用weakMap与上面原因一样，一是防止内存泄漏，二是防止重复收集
+
+用Map存储而不是用Object，是因为map的键可以是任意值，而Object 的键必须是一个 String 或是Symbol
+
+用Set当然是为了去重了，Set存储的是数据不能重复的。
