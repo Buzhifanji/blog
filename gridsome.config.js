@@ -35,6 +35,9 @@ module.exports = {
                         '/vue3/component/',
                         '/vue3/vnode-dom/',
                         '/vue3/diff1/',
+                        '/vue3/vue3-2-component/',
+                        '/vue3/vue3-2-ref/',
+                        '/vue3/vue3-2-reactivity/',
                     ]
                 }, ]
             },

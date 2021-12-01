@@ -50,7 +50,7 @@ import Example from './example.vue;
 
 **示例：**
 
-```vue
+```js
 <template>
     <!-- 使用组件 -->
     <component :is="DynamicComponent"></component>
@@ -69,7 +69,7 @@ vue3.2并没有提供异步组件的使用例子。以下示例是笔者自身�
 
 **示例1：**
 
-```vue
+```js
 <template>
     <!-- 使用组件 -->
     <component :is="AsyncComponent"></component>
@@ -85,7 +85,7 @@ const AsyncComponent: defineAsyncComponent(() => import('./asyncComponent.vue'))
 
 **示例2：**
 
-```vue
+```js
 <template>
     <button @click="btnClick">click</button>
     <!-- 使用组件 -->

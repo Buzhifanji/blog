@@ -2,6 +2,7 @@
 title: Vue3.2-reactive实现原理
 author: buzhifanji
 tag: vue3
+sidebar: 'vue3'
 ---
 
 # 带着问题阅读源码Vue3.2-reactive实现原理
