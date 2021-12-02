@@ -43,6 +43,8 @@ sidebar: 'vue3'
       return cRef;
   }
 ```
+computed 标准化getter/setter 之后，就实例化ComputedRefImpl并返回
+
 接下来看看ComputedRefImpl的实现
 
 ```js
@@ -52,15 +54,18 @@ sidebar: 'vue3'
           this.dep = undefined;
           // dirty 这个属性很巧妙，它用于开关是否更新依赖，而打开这个开关会get value 的时候触发的，
           // 其次执行一次就会关闭，只有通过 get value来打开
-          this._dirty = true; 
+          this._dirty = true;
           this.__v_isRef = true;
            // 创建 effect
+           // 这里 实例化 ReactiveEffect的时候，会执行 getter 方法一次
+           // ReactiveEffect 第二个参数 是scheduler
+           // 依赖数据变更的时候，会调用 scheduler
           this.effect = new ReactiveEffect(getter, () => {
               if (!this._dirty) {
                   // 延迟 执行
                   // get 的时候触发，
                   this._dirty = true;
-                  // 更新依赖 
+                  // 更新依赖
                   // ref 这个api set 的时候，也是调用这个方法更新依赖的
                   triggerRefValue(this);
               }
@@ -76,7 +81,7 @@ sidebar: 'vue3'
           if (self._dirty) {
               // 打开更新依赖的开关
               self._dirty = false;
-              // 
+              //
               self._value = self.effect.run();
           }
           return self._value;
@@ -85,5 +90,29 @@ sidebar: 'vue3'
           this._setter(newValue);
       }
   }
+```
+ComputedRefImpl 这个类主要做了两件事情
+## 总结
+
+### computed的使用
+
+computed 一开始会标准化getter、和setter。如果只传入一个函数就是getter,此时computed的结果不只读的；如果想要修改computed的结果，需要传入定义好的get和set。
+
+### computed的执行顺序
+
+执行顺序有点抽象，我们用实际例子来说明一下
+
+```vue
+<template id="myapp">
+    <h2>源码学习-computed</h2>
+    <button @click="action">click</button>
+    <p>{{numPlus}}</p>
+</template>
+<script setup>
+    import { computed, ref } from 'vue';
+    const num = ref(1)
+    const numPlus = computed(() => num.value + 1)
+    const action = () =>  num.value += 2
+</script>
 ```
 

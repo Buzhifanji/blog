@@ -317,12 +317,12 @@ set 的时候比较简单，获取key，设置新值。如果是新增数据，�
     function triggerEffects(dep, debuggerEventExtraInfo) {
       for (const effect of isArray(dep) ? dep : [...dep]) {
           if (effect !== activeEffect || effect.allowRecurse) {
-              // 组件更新, doWatch, computed设置这个属性
+              // 开发环境调试使用，跟踪依赖数据
               if (effect.onTrigger) {
                   effect.onTrigger(extend({ effect }, debuggerEventExtraInfo));
               }
               // scheduler 调动更新
-              // doWatch 里面设置
+              // 组件更新, doWatch, computed设置这个属性
               if (effect.scheduler) {
                   effect.scheduler();
               }
