@@ -94,10 +94,9 @@ computed 标准化getter/setter 之后，就实例化ComputedRefImpl并返回
 ComputedRefImpl 这个类主要做了两件事情
 ## 总结
 
-### computed的使用
+首先computed 一开始会标准化getter、和setter。如果只传入一个函数就是getter,此时computed的结果不只读的；如果想要修改computed的结果，需要传入定义好的get和set。
 
-computed 一开始会标准化getter、和setter。如果只传入一个函数就是getter,此时computed的结果不只读的；如果想要修改computed的结果，需要传入定义好的get和set。
-
+处理好getter/setter之后，会实例化 ComputedRefImpl 这个类，并返返回实例化对象。ComputedRefImpl这个类在构造器constructor里的第一个参数是getter，第二个参数是setter.
 ### computed的执行顺序
 
 执行顺序有点抽象，我们用实际例子来说明一下
