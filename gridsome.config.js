@@ -4,6 +4,72 @@
 // Changes here require a server restart.
 // To restart press CTRL + C in terminal and run `gridsome develop`
 
+// =========== 配置每个主题的 sidebar ===================
+
+// 数据结构
+const dataStructure = {
+    name: 'data-structure',
+    sections: [{
+        title: '数据结构',
+        items: [
+            '/data-structure/',
+            '/data-structure/linked-list/',
+        ]
+    }, ]
+}
+
+// vue
+const vue = {
+    name: 'vue3',
+    sections: [{
+        title: '阅读vue3源码',
+        items: [
+            '/vue3/',
+            '/vue3/debugging/',
+            '/vue3/create-app/',
+            '/vue3/component/',
+            '/vue3/vnode-dom/',
+            '/vue3/diff1/',
+            '/vue3/vue3-2-component/',
+            '/vue3/vue3-2-ref/',
+            '/vue3/vue3-2-reactivity/',
+        ]
+    }, ]
+}
+
+// 设计模式
+const designPattern = {
+    name: 'design-pattern',
+    sections: [{
+        title: '设计模式',
+        items: [
+            '/design-pattern/creational-patterns/easy-factory-method/',
+        ]
+    }, ]
+}
+
+// 网络
+const network = {
+    name: 'network',
+    sections: [{
+        title: '计算机网络',
+        items: [
+            '/network/dns/',
+        ]
+    }, ]
+}
+
+// 代码片段
+const codeSnippet = {
+    name: 'code-snippet',
+    sections: [{
+        title: '代码片段',
+        items: [
+            '/copy/',
+        ]
+    }, ]
+}
+
 module.exports = {
     siteName: 'Home',
     icon: {
@@ -24,63 +90,7 @@ module.exports = {
                 { path: '/network/dns/', title: '网络' },
             ]
         },
-        sidebar: [{
-                name: 'vue3',
-                sections: [{
-                    title: '阅读vue3源码',
-                    items: [
-                        '/vue3/',
-                        '/vue3/debugging/',
-                        '/vue3/create-app/',
-                        '/vue3/component/',
-                        '/vue3/vnode-dom/',
-                        '/vue3/diff1/',
-                        '/vue3/vue3-2-component/',
-                        '/vue3/vue3-2-ref/',
-                        '/vue3/vue3-2-reactivity/',
-                    ]
-                }, ]
-            },
-            {
-                name: 'design-pattern',
-                sections: [{
-                    title: '设计模式',
-                    items: [
-                        '/design-pattern/creational-patterns/easy-factory-method/',
-                    ]
-                }, ]
-            },
-            {
-                name: 'data-structure',
-                sections: [{
-                    title: '数据结构与算法',
-                    items: [
-                        '/data-structure/stack/',
-                        '/leetcode/add-two-numbers/',
-                        '/leetcode/two-sum/',
-                        '/leetcode/longest-substring-without-repeating-characters/',
-                    ]
-                }, ]
-            },
-            {
-                name: 'network',
-                sections: [{
-                    title: '计算机网络',
-                    items: [
-                        '/network/dns/',
-                    ]
-                }, ]
-            },
-            {
-                name: 'code-snippet',
-                sections: [{
-                    title: '代码片段',
-                    items: [
-                        '/copy/',
-                    ]
-                }, ]
-            },
-        ]
+        sidebar: [vue, designPattern, dataStructure, network, codeSnippet]
     },
     plugins: [{
             use: '@gridsome/source-filesystem',

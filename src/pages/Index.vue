@@ -72,7 +72,7 @@
         </g-link>
 
         <g-link
-          to="/code-snippet/"
+          to="/data-structure/"
           class="flex flex-col items-center w-full px-4 mb-8 text-center md:w-1/3"
         >
           <MapIcon size="3x" class="mb-6 text-ui-primary" />

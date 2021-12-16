@@ -1,5 +1,5 @@
 {
-  "name": "gridsome-docs",
+  "name": "blog",
   "private": true,
   "scripts": {
     "build": "gridsome build",

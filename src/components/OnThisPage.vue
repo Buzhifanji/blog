@@ -1,6 +1,6 @@
 <template>
   <div class="mt-8 sm:pl-4 md:pl-6 md:pt-12 lg:pl-8 sm:pb-16 sm:border-l border-ui-border md:mt-0">
-    <h3 class="pt-0 mt-0 text-sm tracking-wide uppercase border-none">On this page</h3>
+    <h3 class="pt-0 mt-0 text-sm tracking-wide uppercase border-none">当前页菜单</h3>
     <div>
       <ul>
         <li
@@ -56,7 +56,7 @@ export default {
   },
 
   watch: {
-    $route: function() {
+    $route: function () {
       if (process.isClient && window.location.hash) {
         this.activeAnchor = window.location.hash;
       }
