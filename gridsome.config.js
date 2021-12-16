@@ -6,11 +6,11 @@
 
 // =========== 配置每个主题的 sidebar ===================
 
-// 数据结构
+// 数据结构与算法
 const dataStructure = {
     name: 'data-structure',
     sections: [{
-        title: '数据结构',
+        title: '数据结构与算法',
         items: [
             '/data-structure/',
             '/data-structure/linked-list/',

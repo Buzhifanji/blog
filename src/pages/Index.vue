@@ -76,7 +76,7 @@
           class="flex flex-col items-center w-full px-4 mb-8 text-center md:w-1/3"
         >
           <MapIcon size="3x" class="mb-6 text-ui-primary" />
-          <h3 class="font-bold tracking-wide uppercase text-ui-primary pt-8">数据结构</h3>
+          <h3 class="font-bold tracking-wide uppercase text-ui-primary pt-8">数据结构与算法</h3>
           <p class="text-lg text-left">用JavaScript实现数据结构</p>
         </g-link>
 
@@ -85,7 +85,7 @@
           class="flex flex-col items-center w-full px-4 mb-8 text-center md:w-1/3"
         >
           <HashIcon size="3x" class="mb-6 text-ui-primary" />
-          <h3 class="font-bold tracking-wide uppercase text-ui-primary pt-8">算法</h3>
+          <h3 class="font-bold tracking-wide text-ui-primary pt-8">LeetCode</h3>
           <p class="text-lg text-left">记录刷LeetCode的笔记</p>
         </g-link>
 
@@ -141,7 +141,7 @@ export default {
   },
 
   metaInfo() {
-    const title = 'Great Documentation starts here';
+    const title = 'buzhifanji blog';
     const description = 'DOCC is a starter theme with instant search and dark mode for writing great technical documentation. Based on Gridsome!';
 
     return {
