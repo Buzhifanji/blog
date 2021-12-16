@@ -70,6 +70,16 @@ const codeSnippet = {
     }, ]
 }
 
+const browser = {
+    name: 'browser',
+    sections: [{
+        title: '浏览器',
+        items: [
+            '/browser/',
+            '/browser/process/',
+        ]
+    }, ]
+}
 module.exports = {
     siteName: 'Home',
     icon: {
@@ -90,7 +100,7 @@ module.exports = {
                 { path: '/network/dns/', title: '网络' },
             ]
         },
-        sidebar: [vue, designPattern, dataStructure, network, codeSnippet]
+        sidebar: [vue, designPattern, dataStructure, network, codeSnippet,browser]
     },
     plugins: [{
             use: '@gridsome/source-filesystem',
