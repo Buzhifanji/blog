@@ -49,6 +49,7 @@ constructor 构造器定义了LinkedList有三个属性：
 - tail：尾部节点指针
 - compare：对比函数
 
+*Comparator这个类在序言里介绍，封装了对比的实现*
 ```js
 class LinkedList {
     /**
