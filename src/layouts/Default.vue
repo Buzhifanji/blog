@@ -1,37 +1,65 @@
 <template>
   <div class="font-sans antialiased text-ui-typo bg-ui-background">
     <div class="flex flex-col justify-start min-h-screen">
-
-      <header ref="header"
-              class="sticky top-0 z-10 w-full border-b bg-ui-background border-ui-border"
-              @resize="setHeaderHeight">
+      <header
+        ref="header"
+        class="
+          sticky
+          top-0
+          z-10
+          w-full
+          border-b
+          bg-ui-background
+          border-ui-border
+        "
+        @resize="setHeaderHeight"
+      >
         <LayoutHeader />
       </header>
 
-      <main class="container relative flex flex-wrap justify-start flex-1 w-full bg-ui-background">
-
-        <aside v-if="hasSidebar"
-               class="sidebar"
-               :class="{ 'open': sidebarOpen }"
-               :style="sidebarStyle">
+      <main
+        class="
+          container
+          relative
+          flex flex-wrap
+          justify-start
+          flex-1
+          w-full
+          bg-ui-background
+        "
+      >
+        <aside
+          v-if="hasSidebar"
+          class="sidebar"
+          :class="{ open: sidebarOpen }"
+          :style="sidebarStyle"
+        >
           <div class="w-full pb-16 bg-ui-background">
             <Sidebar @navigate="sidebarOpen = false" />
           </div>
         </aside>
 
-        <div class="w-full pb-24"
-             :class="{'pl-0 lg:pl-12 lg:w-3/4': hasSidebar}">
+        <div
+          class="w-full pb-24"
+          :class="{ 'pl-0 lg:pl-12 lg:w-3/4': hasSidebar }"
+        >
           <slot />
         </div>
-
       </main>
-
     </div>
 
-    <div v-if="hasSidebar"
-         class="fixed bottom-0 right-0 z-50 p-8 lg:hidden">
-      <button class="p-3 text-white rounded-full shadow-lg bg-ui-primary hover:text-white"
-              @click="sidebarOpen = ! sidebarOpen">
+    <div v-if="hasSidebar" class="fixed bottom-0 right-0 z-50 p-8 lg:hidden">
+      <button
+        class="
+          p-3
+          text-white
+          rounded-full
+          shadow-lg
+          bg-ui-primary
+          hover:text-white
+        "
+        @click="sidebarOpen = !sidebarOpen"
+      >
         <XIcon v-if="sidebarOpen" />
         <MenuIcon v-else />
       </button>
@@ -48,96 +76,98 @@ query {
 </static-query>
 
 <script>
-import Sidebar from '@/components/Sidebar'
-import LayoutHeader from '@/components/LayoutHeader'
-import { MenuIcon, XIcon } from 'vue-feather-icons'
+import Sidebar from "@/components/Sidebar";
+import LayoutHeader from "@/components/LayoutHeader";
+import { MenuIcon, XIcon } from "vue-feather-icons";
 
 export default {
   components: {
     Sidebar,
     LayoutHeader,
     MenuIcon,
-    XIcon
+    XIcon,
   },
   data() {
     return {
       headerHeight: 0,
-      sidebarOpen: false
-    }
+      sidebarOpen: false,
+    };
   },
   watch: {
-    sidebarOpen: function(isOpen) {
-      document.body.classList.toggle('overflow-hidden', isOpen)
-    }
+    sidebarOpen: function (isOpen) {
+      document.body.classList.toggle("overflow-hidden", isOpen);
+    },
   },
   methods: {
     setHeaderHeight() {
       this.$nextTick(() => {
-        this.headerHeight = this.$refs.header.offsetHeight
-      })
-    }
+        this.headerHeight = this.$refs.header.offsetHeight;
+      });
+    },
   },
   computed: {
     sidebarStyle() {
       return {
-        top: this.headerHeight + 'px',
-        height: `calc(100vh - ${this.headerHeight}px)`
-      }
+        top: this.headerHeight + "px",
+        height: `calc(100vh - ${this.headerHeight}px)`,
+      };
     },
     hasSidebar() {
-      return this.$page && this.headerHeight > 0
-    }
+      return this.$page && this.headerHeight > 0;
+    },
   },
   mounted() {
-    this.setHeaderHeight()
+    if (process.isClient) {
+      this.setHeaderHeight();
+    }
   },
   metaInfo() {
     return {
       meta: [
         {
-          key: 'og:type',
-          name: 'og:type',
-          content: 'website'
+          key: "og:type",
+          name: "og:type",
+          content: "website",
         },
         {
-          key: 'twitter:card',
-          name: 'twitter:card',
-          content: 'summary_large_image'
+          key: "twitter:card",
+          name: "twitter:card",
+          content: "summary_large_image",
         },
         {
-          key: 'og:image',
-          name: 'og:image',
-          content: process.env.SITE_URL + '/logo.jpg'
+          key: "og:image",
+          name: "og:image",
+          content: process.env.SITE_URL + "/logo.jpg",
         },
         {
-          key: 'twitter:image',
-          name: 'twitter:image',
-          content: process.env.SITE_URL + '/logo.jpg'
-        }
-      ]
-    }
-  }
-}
+          key: "twitter:image",
+          name: "twitter:image",
+          content: process.env.SITE_URL + "/logo.jpg",
+        },
+      ],
+    };
+  },
+};
 </script>
 
 <style>
 :root {
-  --color-ui-background: theme('colors.white');
-  --color-ui-typo: theme('colors.gray.700');
-  --color-ui-sidebar: theme('colors.gray.200');
-  --color-ui-border: theme('colors.gray.300');
-  --color-ui-primary: theme('colors.indigo.600');
+  --color-ui-background: theme("colors.white");
+  --color-ui-typo: theme("colors.gray.700");
+  --color-ui-sidebar: theme("colors.gray.200");
+  --color-ui-border: theme("colors.gray.300");
+  --color-ui-primary: theme("colors.indigo.600");
 }
 
 html[lights-out] {
-  --color-ui-background: theme('colors.gray.900');
-  --color-ui-typo: theme('colors.gray.100');
-  --color-ui-sidebar: theme('colors.gray.800');
-  --color-ui-border: theme('colors.gray.800');
-  --color-ui-primary: theme('colors.indigo.500');
+  --color-ui-background: theme("colors.gray.900");
+  --color-ui-typo: theme("colors.gray.100");
+  --color-ui-sidebar: theme("colors.gray.800");
+  --color-ui-border: theme("colors.gray.800");
+  --color-ui-primary: theme("colors.indigo.500");
 }
-html[lights-out] code[class*='language-'],
-html[lights-out] pre[class*='language-'] {
+html[lights-out] code[class*="language-"],
+html[lights-out] pre[class*="language-"] {
   @apply bg-ui-border;
 }
 
@@ -160,7 +190,7 @@ h4:hover a::before {
 }
 
 h4 a::before {
-  content: '#';
+  content: "#";
   margin-left: -1em;
   padding-right: 1em;
   @apply text-ui-primary absolute opacity-0 float-left;
@@ -251,14 +281,14 @@ code {
   @apply px-1 py-1 text-ui-typo bg-ui-sidebar font-mono border-b border-r border-ui-border text-sm rounded;
 }
 
-pre[class*='language-'] {
+pre[class*="language-"] {
   @apply max-w-full overflow-x-auto rounded;
 }
 
-pre[class*='language-'] + p {
+pre[class*="language-"] + p {
   @apply mt-4;
 }
-pre[class*='language-'] > code[class*='language-'] {
+pre[class*="language-"] > code[class*="language-"] {
   @apply border-none leading-relaxed;
 }
 
