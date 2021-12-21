@@ -5,7 +5,7 @@
     "build": "gridsome build",
     "serve": "gridsome develop",
     "explore": "gridsome explore",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gridsome build && gh-pages -d dist"
   },
   "dependencies": {
     "gridsome": "^0.7.23"
