@@ -4,13 +4,13 @@
 set -e
 
 # 生成静态文件
-npm run docs:build
+npm run gridsome build
 
 # 进入生成的文件夹
-cd docs/.vuepress/dist
+cd dist
 
 # 拷贝目录和文件
-cp -r ../../../.github ./
+cp -r ../.github ./
 
 git init
 git add -A
