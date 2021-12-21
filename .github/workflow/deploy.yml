@@ -2,30 +2,19 @@ name: buzhifanji blog
 on: # on 字段指定触发 workflow 的条件，通常是某些事件
   push: # push事件触发 workflow
     branches: # 指定触发事件时，可以限定分支或标签
-      - main
+      - gh-pages
 
-jobs: # workflow 文件的主体是jobs字段，表示要执行的一项或多项任务
-  build-and-deploy:
-    # 乌班图的系统
+jobs:
+  repo-sync:
     runs-on: ubuntu-latest
     steps:
-    # 部署到服务器
-    - name: Deploy
-      uses: appleboy/ssh-action@master
-      #  在git账号中配置secrets并填写一些服务器信息,然后通过它获取
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.KEY }}
-        port: ${{ secrets.PORT }}
-        debug: true
-        # 运行在服务端的命令
-        script: |
-        	# tmp临时目录
-          cd /tmp
-          # 克隆git代码 记得安装git
-          git clone https://github.com/CONOR007/vue-automated-deployment.git
-          cd /tmp/vue-automated-deployment
-          # 运行项目中deploy.sh脚本文件
-          chmod +x ./deploy.sh
-          ./deploy.sh
+      - name: Mirror the Github organization repos to Gitee.
+        uses: Yikun/hub-mirror-action@master
+        with:
+          src: 'github/Buzhifanji'
+          dst: 'gitee/buzhifanji'
+          dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}
+          dst_token:  ${{ secrets.GITEE_TOKEN }}
+          static_list: "blog"
+          force_update: true
+			    debug: true
