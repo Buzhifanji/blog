@@ -12,8 +12,14 @@ export const data = {
   "excerpt": "",
   "headers": [],
   "git": {
-    "updatedTime": null,
-    "contributors": []
+    "updatedTime": 1640793008000,
+    "contributors": [
+      {
+        "name": "buzhifanji",
+        "email": "buzhifanji@163.com",
+        "commits": 1
+      }
+    ]
   },
   "filePathRelative": "browser/index.md"
 }

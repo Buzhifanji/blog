@@ -1843,6 +1843,15 @@ function useClipboard(options = {}) {
     copy
   };
 }
+var globalKey = "__vueuse_ssr_handlers__";
+globalThis[globalKey] = globalThis[globalKey] || {};
+var handlers = globalThis[globalKey];
+function getSSRHandler(key, fallback) {
+  return handlers[key] || fallback;
+}
+function setSSRHandler(key, fn) {
+  handlers[key] = fn;
+}
 function guessSerializerType(rawInit) {
   return rawInit == null ? "any" : rawInit instanceof Set ? "set" : rawInit instanceof Map ? "map" : typeof rawInit === "boolean" ? "boolean" : typeof rawInit === "string" ? "string" : typeof rawInit === "object" ? "object" : Array.isArray(rawInit) ? "object" : !Number.isNaN(rawInit) ? "number" : "any";
 }
@@ -1876,7 +1885,10 @@ var StorageSerializers = {
     write: (v) => JSON.stringify(Array.from(v.entries()))
   }
 };
-function useStorage(key, initialValue, storage = ((_a2) => (_a2 = defaultWindow) == null ? void 0 : _a2.localStorage)(), options = {}) {
+function useStorage(key, initialValue, storage = getSSRHandler("getDefaultStorage", () => {
+  var _a2;
+  return (_a2 = defaultWindow) == null ? void 0 : _a2.localStorage;
+})(), options = {}) {
   var _a2;
   const {
     flush = "pre",
@@ -1903,6 +1915,8 @@ function useStorage(key, initialValue, storage = ((_a2) => (_a2 = defaultWindow)
         data.value = rawInit;
         if (writeDefaults && rawInit !== null)
           storage.setItem(key, serializer.write(rawInit));
+      } else if (typeof rawValue !== "string") {
+        data.value = rawValue;
       } else {
         data.value = serializer.read(rawValue);
       }
@@ -1951,12 +1965,14 @@ var __spreadValues$e = (a, b) => {
   return a;
 };
 function useColorMode(options = {}) {
-  var _a2;
   const {
     selector = "html",
     attribute = "class",
     window: window2 = defaultWindow,
-    storage = (_a2 = defaultWindow) == null ? void 0 : _a2.localStorage,
+    storage = getSSRHandler("getDefaultStorage", () => {
+      var _a2;
+      return (_a2 = defaultWindow) == null ? void 0 : _a2.localStorage;
+    })(),
     storageKey = "vueuse-color-scheme",
     listenToStorageChanges = true,
     storageRef
@@ -1977,12 +1993,12 @@ function useColorMode(options = {}) {
       store.value = v;
     }
   });
-  function defaultOnChanged(value) {
-    const el = window2 == null ? void 0 : window2.document.querySelector(selector);
+  const updateHTMLAttrs = getSSRHandler("updateHTMLAttrs", (selector2, attribute2, value) => {
+    const el = window2 == null ? void 0 : window2.document.querySelector(selector2);
     if (!el)
       return;
-    if (attribute === "class") {
-      const current = (modes[value] || "").split(/\s/g);
+    if (attribute2 === "class") {
+      const current = value.split(/\s/g);
       Object.values(modes).flatMap((i) => (i || "").split(/\s/g)).filter(Boolean).forEach((v) => {
         if (current.includes(v))
           el.classList.add(v);
@@ -1990,8 +2006,12 @@ function useColorMode(options = {}) {
           el.classList.remove(v);
       });
     } else {
-      el.setAttribute(attribute, value);
+      el.setAttribute(attribute2, value);
     }
+  });
+  function defaultOnChanged(mode) {
+    var _a2;
+    updateHTMLAttrs(selector, attribute, (_a2 = modes[mode]) != null ? _a2 : mode);
   }
   function onChanged(mode) {
     if (options.onChanged)
@@ -1999,7 +2019,7 @@ function useColorMode(options = {}) {
     else
       defaultOnChanged(mode);
   }
-  watch(state, onChanged, { flush: "post" });
+  watch(state, onChanged, { flush: "post", immediate: true });
   tryOnMounted(() => onChanged(state.value));
   return state;
 }
@@ -4807,7 +4827,10 @@ function useSpeechSynthesis(text, options = {}) {
     speak
   };
 }
-function useStorageAsync(key, initialValue, storage = ((_a2) => (_a2 = defaultWindow) == null ? void 0 : _a2.localStorage)(), options = {}) {
+function useStorageAsync(key, initialValue, storage = getSSRHandler("getDefaultStorageAsync", () => {
+  var _a2;
+  return (_a2 = defaultWindow) == null ? void 0 : _a2.localStorage;
+})(), options = {}) {
   var _a2;
   const {
     flush = "pre",
@@ -5102,17 +5125,18 @@ function useTitle(newTitle = null, options = {}) {
   var _a2, _b2;
   const {
     document: document2 = defaultDocument,
-    observe = false
+    observe = false,
+    titleTemplate = "%s"
   } = options;
   const title = ref((_a2 = newTitle != null ? newTitle : document2 == null ? void 0 : document2.title) != null ? _a2 : null);
   watch(title, (t, o) => {
     if (isString(t) && t !== o && document2)
-      document2.title = t;
+      document2.title = titleTemplate.replace("%s", t);
   }, { immediate: true });
   if (observe && document2) {
     useMutationObserver((_b2 = document2.head) == null ? void 0 : _b2.querySelector("title"), () => {
       if (document2 && document2.title !== title.value)
-        title.value = document2.title;
+        title.value = titleTemplate.replace("%s", document2.title);
     }, { childList: true });
   }
   return title;
@@ -5879,6 +5903,7 @@ export {
   eagerComputed,
   extendRef,
   get,
+  getSSRHandler,
   identity,
   ignorableWatch,
   increaseWithUnit,
@@ -5913,6 +5938,7 @@ export {
   reactivePick,
   refDefault,
   set2 as set,
+  setSSRHandler,
   syncRef,
   templateRef,
   throttleFilter,

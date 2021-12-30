@@ -41,6 +41,45 @@ export const searchIndex = [
     "extraFields": []
   },
   {
+    "title": "序言",
+    "headers": [
+      {
+        "level": 2,
+        "title": "介绍",
+        "slug": "介绍",
+        "children": []
+      },
+      {
+        "level": 2,
+        "title": "对比方法的复用：Comparator",
+        "slug": "对比方法的复用-comparator",
+        "children": [
+          {
+            "level": 3,
+            "title": "方法介绍",
+            "slug": "方法介绍",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "代码实现",
+            "slug": "代码实现",
+            "children": []
+          },
+          {
+            "level": 3,
+            "title": "测试用例",
+            "slug": "测试用例",
+            "children": []
+          }
+        ]
+      }
+    ],
+    "path": "/data-structure/",
+    "pathLocale": "/",
+    "extraFields": []
+  },
+  {
     "title": "链表",
     "headers": [],
     "path": "/data-structure/link.html",
@@ -83,45 +122,6 @@ export const searchIndex = [
       }
     ],
     "path": "/data-structure/linked-list.html",
-    "pathLocale": "/",
-    "extraFields": []
-  },
-  {
-    "title": "序言",
-    "headers": [
-      {
-        "level": 2,
-        "title": "介绍",
-        "slug": "介绍",
-        "children": []
-      },
-      {
-        "level": 2,
-        "title": "对比方法的复用：Comparator",
-        "slug": "对比方法的复用-comparator",
-        "children": [
-          {
-            "level": 3,
-            "title": "方法介绍",
-            "slug": "方法介绍",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "代码实现",
-            "slug": "代码实现",
-            "children": []
-          },
-          {
-            "level": 3,
-            "title": "测试用例",
-            "slug": "测试用例",
-            "children": []
-          }
-        ]
-      }
-    ],
-    "path": "/data-structure/",
     "pathLocale": "/",
     "extraFields": []
   },

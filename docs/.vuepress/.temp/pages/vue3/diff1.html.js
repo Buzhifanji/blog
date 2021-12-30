@@ -40,8 +40,14 @@ export const data = {
     }
   ],
   "git": {
-    "updatedTime": null,
-    "contributors": []
+    "updatedTime": 1640793008000,
+    "contributors": [
+      {
+        "name": "buzhifanji",
+        "email": "buzhifanji@163.com",
+        "commits": 1
+      }
+    ]
   },
   "filePathRelative": "vue3/diff1.md"
 }
