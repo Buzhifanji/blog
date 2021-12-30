@@ -15,6 +15,10 @@ tag: data-structure
 
 **声明**：这一系列并不是原创，主要参考来源[JavaScript 算法与数据结构](https://github.com/trekhleb/javascript-algorithms/blob/master/README.zh-CN.md)
 
+## 思维导图
+
+![思维导图](/minds/data-structure.png)
+![思维导图](/minds/11.png)
 ## 对比方法的复用：Comparator
 
 ### 方法介绍
