@@ -17,8 +17,6 @@ export const pagesComponents = {
   "v-6a610e4e": defineAsyncComponent(() => import(/* webpackChunkName: "v-6a610e4e" */"/Users/huangbin/Documents/my_project/blog/docs/.vuepress/.temp/pages/data-structure/link.html.vue")),
   // path: /data-structure/linked-list.html
   "v-2ca1ff4d": defineAsyncComponent(() => import(/* webpackChunkName: "v-2ca1ff4d" */"/Users/huangbin/Documents/my_project/blog/docs/.vuepress/.temp/pages/data-structure/linked-list.html.vue")),
-  // path: /data-structure/mind.html
-  "v-5321fb81": defineAsyncComponent(() => import(/* webpackChunkName: "v-5321fb81" */"/Users/huangbin/Documents/my_project/blog/docs/.vuepress/.temp/pages/data-structure/mind.html.vue")),
   // path: /data-structure/stack.html
   "v-13524ed7": defineAsyncComponent(() => import(/* webpackChunkName: "v-13524ed7" */"/Users/huangbin/Documents/my_project/blog/docs/.vuepress/.temp/pages/data-structure/stack.html.vue")),
   // path: /design-pattern/easy-factory-method.html

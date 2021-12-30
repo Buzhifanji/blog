@@ -4,6 +4,9 @@
 <p>数据结构和算法光看是学不会的，需要自己手动去实现一遍，理解每一行的代码的意思，重写一变测试用例。</p>
 <p>个人仓单代码地址<a href="https://github.com/Buzhifanji/CS-Notes/tree/main/code/javascript-algorithms" target="_blank" rel="noopener noreferrer">javascript-algorithms<ExternalLinkIcon/></a></p>
 <p><strong>声明</strong>：这一系列并不是原创，主要参考来源<a href="https://github.com/trekhleb/javascript-algorithms/blob/master/README.zh-CN.md" target="_blank" rel="noopener noreferrer">JavaScript 算法与数据结构<ExternalLinkIcon/></a></p>
+<h2 id="思维导图" tabindex="-1"><a class="header-anchor" href="#思维导图" aria-hidden="true">#</a> 思维导图</h2>
+<p><img src="/minds/data-structure.png" alt="思维导图">
+<img src="/minds/11.png" alt="思维导图"></p>
 <h2 id="对比方法的复用-comparator" tabindex="-1"><a class="header-anchor" href="#对比方法的复用-comparator" aria-hidden="true">#</a> 对比方法的复用：Comparator</h2>
 <h3 id="方法介绍" tabindex="-1"><a class="header-anchor" href="#方法介绍" aria-hidden="true">#</a> 方法介绍</h3>
 <p>介绍一下实现对比的类，我们在实现数据结构的时候，都会实例化这个类。</p>

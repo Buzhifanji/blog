@@ -18,6 +18,12 @@ export const data = {
     },
     {
       "level": 2,
+      "title": "思维导图",
+      "slug": "思维导图",
+      "children": []
+    },
+    {
+      "level": 2,
       "title": "对比方法的复用：Comparator",
       "slug": "对比方法的复用-comparator",
       "children": [
@@ -41,18 +47,7 @@ export const data = {
         }
       ]
     }
-  ],
-  "git": {
-    "updatedTime": 1640793008000,
-    "contributors": [
-      {
-        "name": "buzhifanji",
-        "email": "buzhifanji@163.com",
-        "commits": 1
-      }
-    ]
-  },
-  "filePathRelative": "data-structure/README.md"
+  ]
 }
 
 if (import.meta.webpackHot) {

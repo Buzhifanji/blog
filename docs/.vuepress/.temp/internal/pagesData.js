@@ -15,8 +15,6 @@ export const pagesData = {
   "v-6a610e4e": () => import(/* webpackChunkName: "v-6a610e4e" */"/Users/huangbin/Documents/my_project/blog/docs/.vuepress/.temp/pages/data-structure/link.html.js").then(({ data }) => data),
   // path: /data-structure/linked-list.html
   "v-2ca1ff4d": () => import(/* webpackChunkName: "v-2ca1ff4d" */"/Users/huangbin/Documents/my_project/blog/docs/.vuepress/.temp/pages/data-structure/linked-list.html.js").then(({ data }) => data),
-  // path: /data-structure/mind.html
-  "v-5321fb81": () => import(/* webpackChunkName: "v-5321fb81" */"/Users/huangbin/Documents/my_project/blog/docs/.vuepress/.temp/pages/data-structure/mind.html.js").then(({ data }) => data),
   // path: /data-structure/stack.html
   "v-13524ed7": () => import(/* webpackChunkName: "v-13524ed7" */"/Users/huangbin/Documents/my_project/blog/docs/.vuepress/.temp/pages/data-structure/stack.html.js").then(({ data }) => data),
   // path: /design-pattern/easy-factory-method.html

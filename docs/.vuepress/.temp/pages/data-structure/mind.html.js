@@ -50,8 +50,14 @@ export const data = {
     }
   ],
   "git": {
-    "updatedTime": null,
-    "contributors": []
+    "updatedTime": 1640851207000,
+    "contributors": [
+      {
+        "name": "huangbin",
+        "email": "buzhifanji@163.com",
+        "commits": 1
+      }
+    ]
   },
   "filePathRelative": "data-structure/mind.md"
 }

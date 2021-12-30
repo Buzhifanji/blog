@@ -11,10 +11,15 @@ export const data = {
   "excerpt": "",
   "headers": [],
   "git": {
-    "updatedTime": 1640793008000,
+    "updatedTime": 1640851207000,
     "contributors": [
       {
         "name": "buzhifanji",
+        "email": "buzhifanji@163.com",
+        "commits": 1
+      },
+      {
+        "name": "huangbin",
         "email": "buzhifanji@163.com",
         "commits": 1
       }

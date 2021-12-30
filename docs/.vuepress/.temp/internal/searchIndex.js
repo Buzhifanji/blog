@@ -65,6 +65,12 @@ export const searchIndex = [
       },
       {
         "level": 2,
+        "title": "思维导图",
+        "slug": "思维导图",
+        "children": []
+      },
+      {
+        "level": 2,
         "title": "对比方法的复用：Comparator",
         "slug": "对比方法的复用-comparator",
         "children": [
