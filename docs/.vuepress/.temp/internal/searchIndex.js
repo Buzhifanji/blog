@@ -41,6 +41,20 @@ export const searchIndex = [
     "extraFields": []
   },
   {
+    "title": "copy",
+    "headers": [],
+    "path": "/code-snippet/copy.html",
+    "pathLocale": "/",
+    "extraFields": []
+  },
+  {
+    "title": "copy-all",
+    "headers": [],
+    "path": "/code-snippet/",
+    "pathLocale": "/",
+    "extraFields": []
+  },
+  {
     "title": "序言",
     "headers": [
       {
@@ -126,23 +140,59 @@ export const searchIndex = [
     "extraFields": []
   },
   {
+    "title": "数据结构",
+    "headers": [
+      {
+        "level": 2,
+        "title": "数组",
+        "slug": "数组",
+        "children": []
+      },
+      {
+        "level": 2,
+        "title": "链表",
+        "slug": "链表",
+        "children": []
+      },
+      {
+        "level": 2,
+        "title": "队列",
+        "slug": "队列",
+        "children": []
+      },
+      {
+        "level": 2,
+        "title": "栈",
+        "slug": "栈",
+        "children": []
+      },
+      {
+        "level": 2,
+        "title": "哈希表（散列）",
+        "slug": "哈希表-散列",
+        "children": []
+      },
+      {
+        "level": 2,
+        "title": "堆",
+        "slug": "堆",
+        "children": []
+      },
+      {
+        "level": 2,
+        "title": "优先队列",
+        "slug": "优先队列",
+        "children": []
+      }
+    ],
+    "path": "/data-structure/mind.html",
+    "pathLocale": "/",
+    "extraFields": []
+  },
+  {
     "title": "栈",
     "headers": [],
     "path": "/data-structure/stack.html",
-    "pathLocale": "/",
-    "extraFields": []
-  },
-  {
-    "title": "copy",
-    "headers": [],
-    "path": "/code-snippet/copy.html",
-    "pathLocale": "/",
-    "extraFields": []
-  },
-  {
-    "title": "copy-all",
-    "headers": [],
-    "path": "/code-snippet/",
     "pathLocale": "/",
     "extraFields": []
   },

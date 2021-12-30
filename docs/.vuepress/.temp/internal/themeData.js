@@ -14,6 +14,7 @@ export const themeData = {
           "/data-structure/README.md",
           "/data-structure/link.md",
           "/data-structure/linked-list.md",
+          "/data-structure/mind.md",
           "/data-structure/stack.md"
         ]
       }
