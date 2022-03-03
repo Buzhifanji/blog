@@ -245,8 +245,8 @@ export default defineConfig4CustomTheme<VdoingThemeConfig>({
     "vuepress-plugin-comment": {
       choosen: "gitalk",
       options: {
-        clientID: "a6e1355287947096b88b",
-        clientSecret: "f0e77d070fabfcd5af95bebb82b2d574d7248d71",
+        clientID: "d75cd7af2586e379aba0",
+        clientSecret: "cd2f47c272e5d7173e09b73113c5b12ccbca0716",
         repo: "blog-gitalk-comment", // GitHub 仓库
         owner: "buzhifanji", // GitHub仓库所有者
         admin: ["buzhifanji"], // 对仓库有写权限的人
