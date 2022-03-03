@@ -247,9 +247,9 @@ export default defineConfig4CustomTheme<VdoingThemeConfig>({
       options: {
         clientID: "d75cd7af2586e379aba0",
         clientSecret: "cd2f47c272e5d7173e09b73113c5b12ccbca0716",
-        repo: "blog-gitalk-comment", // GitHub 仓库
-        owner: "buzhifanji", // GitHub仓库所有者
-        admin: ["buzhifanji"], // 对仓库有写权限的人
+        repo: "blog-comment", // GitHub 仓库
+        owner: "Buzhifanji", // GitHub仓库所有者
+        admin: ["Buzhifanji"], // 对仓库有写权限的人
         // distractionFreeMode: true,
         pagerDirection: "last", // 'first'正序 | 'last'倒序
         id: "<%- (frontmatter.permalink || frontmatter.to.path).slice(-16) %>", //  页面的唯一标识,长度不能超过50
