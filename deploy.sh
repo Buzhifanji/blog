@@ -22,6 +22,7 @@ else
   githubUrl=https://buzhifanji:${GITHUB_TOKEN}@github.com:Buzhifanji/blog.git
   git config --global user.name "buzhifanji"
   git config --global user.email "buzhifanji@163.com"
+  git config --global init.defaultBranch "main"
 fi
 git init
 git add -A
