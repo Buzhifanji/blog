@@ -12,7 +12,7 @@ cd docs/.vuepress/dist
 # deploy to github pages
 # echo 'https://buzhifanji.github.io/blog/' > CNAME
 
-git push -u git@github.com:Buzhifanji/blog.git main:gh-pages
+git push -f git@github.com:Buzhifanji/blog.git main:gh-pages
 
 if [ -z "$GITHUB_TOKEN" ]; then
   msg='deploy'
