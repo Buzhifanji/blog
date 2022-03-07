@@ -12,13 +12,13 @@ features: # 可选的
     details: JavaScript、ES6、Vue框架等前端技术
     link: /web/ # 可选
     imgUrl: /img/web.png # 可选
-  - title: 页面
-    details: html(5)/css(3)，前端页面相关技术
-    link: /ui/
+  - title: 算法
+    details:  数据结构与算法
+    link: /leetcode/
     imgUrl: /img/ui.png
   - title: 技术
-    details: 技术文档、教程、技巧、总结等文章
-    link: /technology/
+    details: 设计模式
+    link: /design-patterns/
     imgUrl: /img/other.png
 
 # 文章列表显示方式: detailed 默认，显示详细版文章列表（包括作者、分类、标签、摘要、分页等）| simple => 显示简约版文章列表（仅标题和日期）| none 不显示文章列表
