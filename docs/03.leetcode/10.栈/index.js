@@ -227,11 +227,12 @@ console.log(solution_index([4, 2, 5, 3, 1], [0, 1, 0, 0, 0]));
 function findRightSmall(list) {
   const result = [];
   const stack = []; // 单调栈
+  const peek = () => stack[stack.length - 1]; // 取栈顶元素
   for (let i = 0; i < list.length; i++) {
     const item = list[i];
-    while (stack.length && list[stack.length - 1] > item) {
+    while (stack.length && list[peek()] > item) {
       // 消除的时候，记录一下被谁消除了
-      result[stack[stack.length - 1]] = i;
+      result[peek()] = i;
       // 消除时候，值更大的需要从栈中消失
       stack.pop();
     }
@@ -239,7 +240,7 @@ function findRightSmall(list) {
   }
   // 栈中剩下的元素，由于没有人能消除他们，因此，只能将结果设置为-1。
   while (stack.length) {
-    result[stack[stack.length - 1]] = -1;
+    result[peek()] = -1;
     stack.pop();
   }
   return result;
@@ -249,6 +250,68 @@ function findRightSmall(list) {
 console.log("=== findRightSmall ====");
 console.log(findRightSmall([5, 2]));
 console.log(findRightSmall([1, 2, 4, 9, 4, 0, 5]));
+
+function findRightBig(list) {
+  const result = [];
+  const stack = []; // 单调栈
+  const peek = () => stack[stack.length - 1]; // 取栈顶元素
+  for (let i = 0; i < list.length; i++) {
+    const item = list[i];
+    while (stack.length && list[peek()] < item) {
+      // 消除的时候，记录一下被谁消除了
+      result[peek()] = i;
+      // 消除时候，值更大的需要从栈中消失
+      stack.pop();
+    }
+    stack.push(i);
+  }
+  // 栈中剩下的元素，由于没有人能消除他们，因此，只能将结果设置为-1。
+  while (stack.length) {
+    result[peek()] = -1;
+    stack.pop();
+  }
+  return result;
+}
+
+// test
+console.log("=== findRightBig ====");
+console.log(findRightBig([5, 2]));
+console.log(findRightBig([1, 2, 4, 9, 4, 0, 5]));
+
+function findLeftSmall(nums) {
+  const result = [];
+  const stack = []; // 单调栈
+  const peek = () => stack[stack.length - 1]; // 取栈顶元素
+  for (let i = 0; i < nums.length; i++) {
+    debugger;
+    const item = nums[i];
+    while (stack.length && peek() >= item) {
+      debugger;
+      // 消除时候，值更大的需要从栈中消失
+      const temp = stack.pop();
+      if (stack.length === 0) {
+        result[temp] = -1;
+      }
+    }
+    if (stack.length) {
+      // 消除的时候，记录一下被谁消除了
+      result[peek()] = i;
+    }
+    stack.push(i);
+  }
+
+  // 栈中剩下的元素，由于没有人能消除他们，因此，只能将结果设置为-1。
+  while (stack.length) {
+    result[peek()] = -1;
+    stack.pop();
+  }
+  return result;
+}
+
+// test
+console.log("=== findLeftSmall ====");
+// console.log(findLeftSmall([5, 2]));
+console.log(findLeftSmall([1, 2, 4, 9, 4, 0, 5]));
 
 function findSmallSeq(nums, k) {
   const result = [];
