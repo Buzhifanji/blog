@@ -44,7 +44,7 @@ export default defineConfig4CustomTheme<VdoingThemeConfig>({
         items: [{ text: "dd", link: "/pages/c78068/" }],
       },
       {
-        text: "leetcode",
+        text: "算法",
         link: "/leetcode/",
         items: [],
       },
