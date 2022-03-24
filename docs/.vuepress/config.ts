@@ -39,9 +39,14 @@ export default defineConfig4CustomTheme<VdoingThemeConfig>({
         ],
       },
       {
+        text: "npm包",
+        link: "/npm/",
+        items: [],
+      },
+      {
         text: "网络",
-        link: "/network",
-        items: [{ text: "dd", link: "/pages/c78068/" }],
+        link: "/network/",
+        items: [],
       },
       {
         text: "算法",
