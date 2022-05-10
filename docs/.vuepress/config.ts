@@ -59,6 +59,11 @@ export default defineConfig4CustomTheme<VdoingThemeConfig>({
         items: [],
       },
       {
+        text: "收藏",
+        link: "/collection/",
+        items: [],
+      },
+      {
         text: "索引",
         link: "/archives/",
         items: [
