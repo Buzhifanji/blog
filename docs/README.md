@@ -15,5 +15,4 @@ heroImage: /avatar.svg
 #     desc: 项目详细描述
 #     link: https://你的项目链接
 
-# footer: Copyright © 2022-present Buzhifanji
 ---
