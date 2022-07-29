@@ -65,10 +65,10 @@ export default hopeTheme({
        * Using Giscus
        */
       provider: "Giscus",
-      repo: "Buzhifanji/leetcode-book",
-      repoId: "R_kgDOHoXcbA",
+      repo: "Buzhifanji/blog",
+      repoId: "R_kgDOGHSl7w",
       category: "Announcements",
-      categoryId: "DIC_kwDOHoXcbM4CQb_S",
+      categoryId: "DIC_kwDOGHSl784CQf-w",
 
       /**
        * Using Twikoo
