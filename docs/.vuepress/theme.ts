@@ -29,6 +29,7 @@ export default hopeTheme({
   displayFooter: true,
   lastUpdated: true,
   contributors: false,
+  editLink: false,
 
   navbarLayout: {
     left: ["Brand"],
