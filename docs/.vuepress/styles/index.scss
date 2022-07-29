@@ -1,0 +1,16 @@
+.sidebar-links li a {
+  overflow: hidden;   
+  text-overflow: ellipsis; //文本溢出显示省略号
+  white-space: nowrap; //文本不会换行
+}
+
+h1, h2, h3, h4, h5, h6, strong, b {
+  font-weight: 600;
+}
+
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 400;
+}
