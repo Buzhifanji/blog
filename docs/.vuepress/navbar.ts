@@ -2,6 +2,11 @@ import { navbar } from "vuepress-theme-hope";
 
 export default navbar([
   {
+    text: "算法导论",
+    icon: "link",
+    link: "https://buzhifanji.github.io/algorithms/",
+  },
+  {
     text: "leetcode-book",
     icon: "link",
     link: "https://buzhifanji.github.io/leetcode-book/",
