@@ -26,7 +26,14 @@ export default sidebar({
       children: readFileNames("computer-systems"),
     },
   ],
-  "/array/": "structure",
+  "/design-pattern/": [
+    {
+      text: "SOLID原则",
+      icon: "note",
+      prefix: "/design-pattern/",
+      children: readFileNames("design-pattern/SOLID"),
+    },
+  ],
 });
 // export default sidebar([
 //   {
