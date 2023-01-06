@@ -1,6 +1,5 @@
-import { SidebarItem } from "@vuepress/theme-default";
 import fs from "fs";
-import { sidebar } from "vuepress-theme-hope";
+import { sidebar, SidebarItem } from "vuepress-theme-hope";
 
 function readFileNames(path: string): SidebarItem[] {
   const result: SidebarItem[] = [];
