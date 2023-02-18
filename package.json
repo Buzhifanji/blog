@@ -1,7 +1,7 @@
 {
-  "name": "leetcode-book",
+  "name": "personal-blog",
   "version": "1.0.0",
-  "description": "刷leetcode笔记",
+  "description": "知识经过沉淀才能被掌握",
   "license": "MIT",
   "scripts": {
     "build": "vuepress build docs",
