@@ -42,10 +42,11 @@ JS规范里描述了所有对象，都有一个隐式引用，它就会称为这
 
 所以两个对象之间的继承，需要分开两个步骤
 
-第一步：编写一个新的 constructor,将两个 constructor 通过 call/apply 的方式合并它们的初始化。合并是按照超类优先的顺序进行。
+第一步：编写一个新的 constructor,将两个 constructor 通过 call/apply 的方式合并它们的初始化。合并是按照超类优先的顺序进行。（这里需要注意一点，es6 class 的继承，继承的是方式，而属性会挂载到原型对象上）
 第二步：取出超类和子类的原型对象，通过 Object.create/Object.setPrototypeOf 显示原型继承的方式，设置子类的原型为超类原型。
 
 这中风格与 ES6 的class风格的背后 constructor 工作方式是一样的，上述实现起来比较繁琐，因此建议 ES6 提供的 class 和 extends 关键字去实现继承。
+
 
 #### 原型深度好文
 
