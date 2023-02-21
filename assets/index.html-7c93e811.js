@@ -1,1 +1,0 @@
-const e=JSON.parse('{"key":"v-84ed7e0e","path":"/design-pattern/SOLID/","title":"S O L I D","lang":"zh-CN","frontmatter":{"title":"S O L I D"},"headers":[],"git":{},"readingTime":{"minutes":0,"words":1},"filePathRelative":null,"excerpt":""}');export{e as data};

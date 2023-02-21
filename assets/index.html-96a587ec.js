@@ -1,1 +1,0 @@
-const e=JSON.parse('{"key":"v-c6e12e8e","path":"/tag/web-component/","title":"web component 标签","lang":"zh-CN","frontmatter":{"title":"web component 标签","blog":{"type":"category","name":"web component","key":"tag"},"layout":"BlogCategory"},"headers":[],"git":{},"readingTime":{"minutes":0,"words":0},"filePathRelative":null,"excerpt":""}');export{e as data};

@@ -1,1 +1,0 @@
-const e=JSON.parse('{"key":"v-d5fe0c96","path":"/design-pattern/","title":"Design Pattern","lang":"zh-CN","frontmatter":{"title":"Design Pattern"},"headers":[],"git":{},"readingTime":{"minutes":0,"words":1},"filePathRelative":null,"excerpt":""}');export{e as data};
