@@ -27,9 +27,9 @@ export default hopeTheme({
   navbar: navbar,
   // 导航栏布局
   navbarLayout: {
-    left: ["Brand"],
+    start: ["Brand"],
     center: [],
-    right: ["Links", "Search", "Repo", "Outlook"],
+    end: ["Links", "Search", "Repo", "Outlook"],
   },
   // sidebar
   sidebar: sidebar,
